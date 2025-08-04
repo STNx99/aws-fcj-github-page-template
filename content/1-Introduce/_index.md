@@ -1,21 +1,32 @@
 ---
-title : "Introduction"
-date :  "`r Sys.Date()`" 
-weight : 1 
-chapter : false
-pre : " <b> 1. </b> "
+title: "Introduction"
+date: "`r Sys.Date()`"
+weight: 1
+chapter: false
+pre: " <b> 1. </b> "
 ---
-**Session Manager** is a function within the AWS System Manager service, SSM provides verifiable and secure version management without opening incoming ports, without Bastion Host or SSH key management. Session Manager also makes it easy to comply with corporate policies that require controlled access to instances, strict security practices, and fully auditable logs with instance access details, while still providing end-users with one-click cross-platform access to your managed instances.
 
-By using Session Manager, you get the following advantages that traditional methods do not have:
+This guide walks you through building an advanced deployment pipeline using **AWS Elastic Beanstalk** with supporting services such as **S3**, **Lambda**, **API Gateway**, **EventBridge**, and **DynamoDB**. The goal is to simulate a fully serverless, event-driven deployment workflow where deployment artifacts are uploaded and automatically deployed, with deployment status tracked and accessible via API.
 
-- No need to open port 22 for SSH protocol, so it is more secure.
-- Can be configured so that the connection does not need to go outside the internet, so it is more secure.
-- No need to manage the server's private key to connect to SSH.
-- Centralized management of users using AWS IAM.
-- Access to the server easily and simply with one click.
-- Faster access time than traditional methods like SSH
-- Support many different operating systems such as Linux, Windows, MacOS
-- Log the connection sessions and commands executed while connecting to the server.
-  
-With the above advantages, you can use Session Manager instead of using Bastion host technique to save us time and money when managing Bastion server. 
+Unlike basic Elastic Beanstalk workflows that rely on ZIP upload through the console or CLI, this guide enables:
+
+- Automated source code retrieval from GitHub
+- Upload and packaging through Lambda
+- Trigger-based deployments via EventBridge
+- Status tracking with DynamoDB
+- Frontend integration using API Gateway (HTTP API)
+
+To support secure infrastructure management, we also leverage **Session Manager** — an AWS Systems Manager feature — for secure, auditable instance access **without the need for Bastion hosts or SSH**. This helps ensure best practices in environments that may still include EC2 resources or require manual intervention.
+
+#### Key Features of This Architecture
+
+- **Fully automated deployment flow** using event-driven architecture
+- **Modular Lambda functions** to handle upload and deployment logic
+- **API Gateway endpoints** for invoking deployments and checking status
+- **S3 static website hosting** for serving deployed frontend content
+- **DynamoDB tracking** for deployment metadata
+- **Secure IAM roles** with scoped permissions
+
+By the end of this tutorial, you will have a working deployment system that mirrors key patterns used in **Elastic Beanstalk Advanced Deployment Strategies**, adapted into a modern, serverless design suitable for both production and experimentation.
+
+---
