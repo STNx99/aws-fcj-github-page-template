@@ -18,7 +18,11 @@ This integration ensures that once a deployment package is uploaded to S3 by the
 
 2. In the sidebar, click **Event buses**
 
+  ![](/images/3.integration/001-connecteventbridge.png)
+
 3. Select the custom event bus named **`upload`**
+
+  ![](/images/3.integration/002-connecteventbridge.png)
 
 ---
 
@@ -28,30 +32,39 @@ This integration ensures that once a deployment package is uploaded to S3 by the
 
 2. Find and click on the rule named **`uploaded_success`**
 
+![](/images/3.integration/003-connecteventbridge.png)
+
 3. Scroll to the **Targets** section
 
-4. If not yet set, click **Add target**. Otherwise, click **Edit**
+![](/images/3.integration/004-connecteventbridge.png)
+
+4. If not yet set, click **Add another target**. Otherwise, click **Edit**
 
    - **Target type**: `AWS service`
    - **Service**: `Lambda function`
    - **Function**: `deploy-function`
    - Leave other options as default
 
-5. Click **Update** or **Add** to save changes
+![](/images/3.integration/005-connecteventbridge.png)
+![](/images/3.integration/006-connecteventbridge.png)
+![](/images/3.integration/007-connecteventbridge.png)
 
----
+5. Click **Skip to review and update**.
 
-#### Event Pattern (Reminder)
+![](/images/3.integration/008-connecteventbridge.png)
 
-This rule listens for custom events from the `upload-function` using the following pattern:
+6. Paste the following event pattern:
 
 ```json
-{
-  "source": ["dewebdeploy.upload"],
-  "detail-type": ["DeploymentUploaded"]
-}
+   {
+     "source": ["dewebdeploy.upload"],
+     "detail-type": ["DeploymentUploaded"]
+   }
 ```
-This event is emitted by the upload-function after it successfully uploads code to the S3 bucket.
+
+7. Click **Update rule**.
+
+![](/images/3.integration/009-connecteventbridge.png)
 
 ---
 

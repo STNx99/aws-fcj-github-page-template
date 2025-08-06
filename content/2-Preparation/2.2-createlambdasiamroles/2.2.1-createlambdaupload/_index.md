@@ -137,5 +137,5 @@ This function is responsible for:
 
 ---
 
-Next Step
+#### Next Step
 Continue to [Create Deploy Lambda Function](../2.2.2-createlambdadeploy/)

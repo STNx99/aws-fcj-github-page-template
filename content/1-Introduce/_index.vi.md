@@ -1,22 +1,32 @@
 ---
-title : "Giới thiệu"
-date :  "`r Sys.Date()`" 
-weight : 1 
-chapter : false
-pre : " <b> 1. </b> "
+title: "Giới thiệu"
+date: "`r Sys.Date()`"
+weight: 1
+chapter: false
+pre: " <b> 1. </b> "
 ---
-**Session Manager** là một chức năng nằm trong dịch vụ System Manager của AWS, Session Manager cung cấp khả năng quản lý các máy chủ một cách an toàn mà **không cần mở port SSH, không cần Bastion Host hoặc quản lý SSH key**. 
-Session Manager cũng giúp dễ dàng tuân thủ các chính sách của công ty yêu cầu quyền truy cập có kiểm soát, đảm bảo việc bảo mật nghiêm ngặt và ghi log truy việc truy cập trong khi vẫn cung cấp cho người dùng cuối quyền truy cập đa nền tảng.
 
-Với việc sử dụng Session Manager, bạn sẽ có được những ưu điểm sau:
+Hướng dẫn này sẽ đưa bạn từng bước xây dựng một **pipeline triển khai nâng cao** sử dụng **AWS Elastic Beanstalk**, kết hợp với các dịch vụ hỗ trợ như **S3**, **Lambda**, **API Gateway**, **EventBridge**, và **DynamoDB**. Mục tiêu là mô phỏng một quy trình triển khai hoàn toàn serverless và dựa trên sự kiện, nơi các gói triển khai được tải lên và tự động triển khai, đồng thời trạng thái triển khai được theo dõi và truy xuất thông qua API.
 
-- Không cần phải mở cổng 22 cho giao thức SSH.
-- Có thể cấu hình để kết nối không cần đi ra ngoài internet.
-- Không cần quản lý private key của server để kết nối SSH.
-- Quản lý tập trung được user bằng việc sử dụng AWS IAM.
-- Truy cập tới server một cách dễ dàng và đơn giản bằng một cú click chuột.
-- Thời gian truy cập nhanh chóng hơn các phương thức truyền thống như SSH.
-- Hỗ trợ nhiều hệ điều hành khác nhau như Linux, Windows, MacOS.
-- Log lại được các phiên kết nối và các câu lệnh đã thực thi trong lúc kết nối tới server.
+Khác với quy trình triển khai Elastic Beanstalk cơ bản chỉ dựa vào việc tải tệp ZIP qua console hoặc CLI, hướng dẫn này cung cấp các khả năng nâng cao:
 
-Với những ưu điểm trên, bạn có thể sử dụng Session Manager thay vì sử dụng kỹ thuật Bastion host giúp chúng ta tiết kiệm được thời gian và chi phí khi quản lý server Bastion.
+- Tự động lấy mã nguồn từ GitHub
+- Tải lên và đóng gói thông qua Lambda
+- Triển khai dựa trên sự kiện thông qua EventBridge
+- Theo dõi trạng thái triển khai với DynamoDB
+- Tích hợp frontend thông qua API Gateway (HTTP API)
+
+Để hỗ trợ quản lý hạ tầng an toàn, chúng ta cũng sử dụng **Session Manager** — một tính năng của AWS Systems Manager — để truy cập instance một cách bảo mật và có kiểm soát **mà không cần dùng đến Bastion hosts hay SSH**. Điều này giúp đảm bảo các phương pháp bảo mật tốt nhất, đặc biệt trong các môi trường vẫn còn sử dụng EC2 hoặc yêu cầu can thiệp thủ công.
+
+#### Các Tính Năng Chính của Kiến Trúc Này
+
+- **Luồng triển khai hoàn toàn tự động** dựa trên kiến trúc sự kiện (event-driven)
+- **Các hàm Lambda tách biệt theo chức năng**, xử lý logic tải lên và triển khai
+- **Các endpoint API Gateway** để gọi triển khai và kiểm tra trạng thái
+- **Hosting website tĩnh trên S3** để phục vụ giao diện frontend
+- **Theo dõi metadata triển khai bằng DynamoDB**
+- **Quyền IAM được phân quyền chặt chẽ và an toàn**
+
+Sau khi hoàn thành hướng dẫn này, bạn sẽ có một hệ thống triển khai hoạt động hoàn chỉnh, phản ánh các mẫu triển khai nâng cao trong **Elastic Beanstalk**, được chuyển thể theo cách hiện đại, serverless, phù hợp cho cả môi trường sản xuất và thử nghiệm.
+
+---

@@ -16,7 +16,7 @@ By the end of this section, your foundational infrastructure will be fully in pl
 
 #### Content
 
-- [2.1 Create S3 Bucket and DynamoDB Table](2.1-creates3dynamodb/)
+- [2.1 Create S3 Bucket and DynamoDB Table](2.1-createlambdafunctions/)
 - [2.2 Create Lambda Functions and IAM Roles](2.2-createlambdasiamroles/)
 - [2.3 Create EventBridge Event Bus and Rules](2.3-createeventbridge/)
 - [2.4 Create API Gateway and Configure Endpoints & CORS](2.4-createapigateway/)

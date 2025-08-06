@@ -67,6 +67,44 @@ In this step, you will create an **Amazon S3 bucket** that will store the deploy
 
 ---
 
+#### Set Up Bucket Policy
+
+To allow public access for static website hosting, you need to configure a **bucket policy**:
+
+1. In the S3 Console, select your bucket, then go to the **Permissions** tab.
+
+![](/images/2.preparation/010-createbucket.png)
+![](/images/2.preparation/011-createbucket.png)
+
+2. Scroll down to **Bucket policy** and click **Edit**.
+
+![](/images/2.preparation/012-createbucket.png)
+
+3. Paste the following policy into the editor, replacing the bucket name if needed:
+
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Sid": "PublicReadGetObject",
+         "Effect": "Allow",
+         "Principal": "*",
+         "Action": "s3:GetObject",
+         "Resource": "arn:aws:s3:::awsdeplybucket12345/*"
+       }
+     ]
+   }
+   ```
+
+![](/images/2.preparation/013-createbucket.png)
+
+4. Click Save changes.
+
+![](/images/2.preparation/014-createbucket.png)
+
+This policy allows public read access to all objects in your bucket. Make sure this is appropriate for your use case (e.g., hosting public website files).
+
 #### Next Step
 
 Continue to [Create DynamoDB Table](../2.1.2-createdynamodb/)

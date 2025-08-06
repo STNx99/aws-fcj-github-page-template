@@ -1,51 +1,111 @@
 ---
-title: "Tạo S3 bucket và bảng DynamoDB"
+title: "Tạo S3 Bucket"
 date: "`r Sys.Date()`"
 weight: 1
 chapter: false
 pre: " <b> 2.1.1 </b> "
 ---
 
-Trong bước này, bạn sẽ tạo một **S3 bucket** để lưu trữ mã nguồn triển khai, và một **bảng DynamoDB** để theo dõi trạng thái của các lần triển khai.
+Trong bước này, bạn sẽ tạo một **Amazon S3 bucket** để lưu trữ các gói triển khai và lưu trữ website tĩnh của bạn. Bucket này sau đó sẽ được các hàm Lambda sử dụng để tải lên các file triển khai, và frontend sẽ dùng để phục vụ nội dung đã triển khai.
 
 ---
 
-#### Tạo S3 Bucket: `awsdeplybucket1234`
+#### Tạo S3 bucket
 
-1. Truy cập [S3 Management Console](https://s3.console.aws.amazon.com/s3/home)
+1. Truy cập [Amazon S3 Console](https://s3.console.aws.amazon.com/s3/)
+
 2. Nhấn **Create bucket**
 
-   ![Create Bucket](/images/2.serverless/001-createbucket.png)
+   ![Create Bucket](/images/2.preparation/001-createbucket.png)
 
-3. Trong trang **Create bucket**:
-   - **Bucket name**: `awsdeplybucket1234`
-   - **Region**: Chọn cùng khu vực với Lambda của bạn (ví dụ: `Asia Pacific (Singapore) ap-southeast-1`)
-   - Các phần còn lại giữ nguyên mặc định
-   - Nhấn **Create bucket**
+3. Cấu hình bucket:
 
-   ![Bucket Settings](/images/2.serverless/002-bucketsettings.png)
+   - **Tên bucket**: `awsdeplybucket12345`  
+     *(Đảm bảo tên này là duy nhất trên toàn cầu)*
+   - **Khu vực (Region)**: Chọn cùng khu vực với nơi các hàm Lambda của bạn chạy (ví dụ: `Asia Pacific (Singapore) ap-southeast-1`)
+   - Giữ các tùy chọn còn lại mặc định:
+     - **Block all public access**: BẬT *(sẽ cấu hình truy cập công khai để hosting website ở bước sau)*
+     - **Versioning**: TẮT
 
----
+   ![Bucket Config](/images/2.preparation/002-createbucket.png)
+   ![Turn off Block](/images/2.preparation/003-createbucket.png)
 
-#### Tạo DynamoDB Table: `deployment-status`
+4. Kéo xuống dưới cùng và nhấn **Create bucket**
 
-1. Truy cập [DynamoDB Console](https://console.aws.amazon.com/dynamodb/home)
-2. Nhấn **Create table**
+   Sau khi tạo, bucket sẽ xuất hiện trong danh sách bucket.
 
-   ![Create Table](/images/2.serverless/003-createdynamodb.png)
-
-3. Cấu hình bảng:
-   - **Table name**: `deployment-status`
-   - **Partition key**: `id` (Type: String)
-   - Các phần còn lại giữ mặc định
-   - Nhấn **Create table**
-
-   ![Table Settings](/images/2.serverless/004-dynamodbsettings.png)
+   ![Create Bucket](/images/2.preparation/004-createbucket.png)
 
 ---
 
-Sau khi hoàn thành, bạn đã có:
-- Một bucket S3 để chứa mã nguồn từ GitHub
-- Một bảng DynamoDB để lưu trữ trạng thái của các lần deploy (thành công, lỗi, thời gian v.v.)
+#### Bật tính năng Hosting Website Tĩnh
 
-Tiếp theo, bạn sẽ tạo Lambda để tải mã nguồn từ GitHub và kích hoạt chuỗi triển khai.
+1. Nhấn vào tên bucket vừa tạo trong S3 Console.
+
+![Click on the newly created bucket name in the S3 Console](/images/2.preparation/005-createbucket.png)
+
+2. Chuyển sang tab **Properties**.
+
+![Navigate to the Properties tab](/images/2.preparation/006-createbucket.png)
+
+3. Kéo xuống phần **Static website hosting**.
+
+![Scroll down to the Static website hosting](/images/2.preparation/007-createbucket.png)
+
+4. Nhấn **Edit**, chọn:
+   - **Hosting type**: `Host a static website`
+   - **Index document**: `index.html`
+   - *(Tùy chọn)* **Error document**: `error.html`
+
+![Setup Static website hosting](/images/2.preparation/008-createbucket.png)
+
+5. Nhấn **Save changes**.
+
+![Click Save changes](/images/2.preparation/009-createbucket.png)
+
+> **Lưu ý**: Bạn sẽ cần cấu hình bucket policy để cho phép truy cập công khai đọc file ở bước triển khai sau.
+
+---
+
+#### Cấu hình Bucket Policy
+
+Để cho phép truy cập công khai phục vụ website tĩnh, bạn cần cấu hình **bucket policy** như sau:
+
+1. Trong S3 Console, chọn bucket của bạn, sau đó vào tab **Permissions**.
+
+![](/images/2.preparation/010-createbucket.png)  
+![](/images/2.preparation/011-createbucket.png)
+
+2. Kéo xuống mục **Bucket policy**, nhấn **Edit**.
+
+![](/images/2.preparation/012-createbucket.png)
+
+3. Dán đoạn policy sau vào trình chỉnh sửa, thay thế tên bucket nếu cần:
+
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Sid": "PublicReadGetObject",
+         "Effect": "Allow",
+         "Principal": "*",
+         "Action": "s3:GetObject",
+         "Resource": "arn:aws:s3:::awsdeplybucket12345/*"
+       }
+     ]
+   }
+   ```
+
+![](/images/2.preparation/013-createbucket.png)
+
+4. Nhấn Save changes.
+
+![](/images/2.preparation/014-createbucket.png)
+
+Chính sách này cho phép truy cập công khai để đọc tất cả các đối tượng trong bucket. Hãy chắc chắn điều này phù hợp với mục đích của bạn (ví dụ: hosting file website công khai).
+
+---
+
+#### Bước tiếp theo
+Tiếp tục sang [Tạo bảng DynamoDB](../2.1.2-createdynamodb/)

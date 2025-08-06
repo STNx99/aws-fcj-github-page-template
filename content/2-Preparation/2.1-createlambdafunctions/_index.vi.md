@@ -1,36 +1,30 @@
 ---
-title: "Chuẩn bị Lambda và DynamoDB"
+title: "Tạo S3 Bucket và Bảng DynamoDB"
 date: "`r Sys.Date()`"
 weight: 1
 chapter: false
 pre: " <b> 2.1 </b> "
 ---
 
-Trong bước này, chúng ta sẽ chuẩn bị các thành phần **serverless** cần thiết cho quy trình tự động triển khai, bao gồm:
+Trong bước này, bạn sẽ chuẩn bị các dịch vụ lưu trữ và cơ sở dữ liệu hỗ trợ quy trình triển khai serverless.
 
-- Một **S3 bucket** để lưu trữ mã nguồn từ GitHub  
-- Một **bảng DynamoDB** để theo dõi trạng thái triển khai  
-- Hai **hàm Lambda**: một dùng để tải mã nguồn lên S3 và một để triển khai  
-- Các **IAM Role và quyền truy cập cần thiết**  
-- Một **Git Layer** để Lambda có thể clone mã từ GitHub
+Cụ thể, bạn sẽ:
+- Tạo một **S3 bucket** (`awsdeplybucket1234`) để lưu trữ các gói triển khai  
+- Tạo một **bảng DynamoDB** với khóa phân vùng là `id` để theo dõi trạng thái triển khai
 
-Sau khi hoàn tất bước này, bạn sẽ có một quy trình làm việc serverless tự động hóa việc tải mã, kích hoạt sự kiện và triển khai ứng dụng.
+Các tài nguyên này là nền tảng cho các hàm Lambda và pipeline dựa trên sự kiện sẽ được cấu hình ở các bước tiếp theo.
 
 ---
 
-### Tổng quan kiến trúc
+### Tổng Quan Kiến Trúc
 
-Kiến trúc sau khi hoàn tất sẽ trông như sau:
+Khi hoàn thành bước này, kiến trúc ban đầu sẽ như sau:
 
-![Serverless Architecture](/images/arc-lambda-dynamodb.png)
+![Kiến trúc Serverless](/images/arc-lambda-dynamodb.png)
 
 ---
 
 ### Nội dung
 
-- [Tạo S3 bucket và bảng DynamoDB](2.1.1-creates3dynamodb/)
-- [Tạo hàm Lambda Upload](2.1.2-createlambdaupload/)
-- [Thiết lập IAM Role cho Lambda Upload](2.1.3-rolelambdaupload/)
-- [Thêm Git Layer cho Lambda Upload](2.1.4-gitlayerupload/)
-- [Tạo hàm Lambda Deploy](2.1.5-createlambdadeploy/)
-- [Thiết lập IAM Role cho Lambda Deploy](2.1.6-rolelambdadeploy/)
+- [2.1.1 Tạo S3 bucket](2.1.1-creates3bucket/)
+- [2.1.2 Tạo bảng DynamoDB](2.1.2-createdynamodb/)

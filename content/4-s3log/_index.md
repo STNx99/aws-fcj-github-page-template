@@ -1,23 +1,21 @@
 ---
-title : "Manage session logs"
-date : "`r Sys.Date()`"
-weight : 4
-chapter : false
-pre : " <b> 4. </b> "
+title: "Testing & Execution"
+date: "`r Sys.Date()`"
+weight: 4
+chapter: false
+pre: " <b> 4. </b> "
 ---
 
+{{% notice info %}}
+In this phase, we will test the deployment process by uploading source code, triggering the deployment workflow, and monitoring logs and events. This ensures that all components — Lambda functions, API Gateway, EventBridge, and DynamoDB — are integrated and functioning correctly.
+{{% /notice %}}
 
-With Session Manager, we can view the history of connections to instances through **Session history**. However, we have not seen the details of the commands used in a session.
+By completing these steps, you’ll validate the end-to-end flow of your deployment pipeline and ensure it’s ready for production use.
 
-![S3](/images/4.test/001-s3.png)
+---
 
-In this section, we will proceed to create an S3 bucket and configure the session logs feature to see the details of the commands used in the session.
+#### Context
 
-![port-fwd](/images/arc-log.png) 
-
-### Content:
-
-   - [Update IAM Role](./4.1-updateiamrole/)
-   - [Create **S3 Bucket**](./4.2-creates3bucket/)
-   - [Create S3 Gateway endpoint](./4.3-creategwes3)
-   - [Configure **Session logs**](./4.4-configsessionlogs/)
+- [4.1 Upload source code via Lambda Upload](/4.1-uploadlambda/)
+- [4.2 Check deployment status via API](/4.2-checkstatus/)  
+- [4.3 Monitor logs and events](/4.3-monitorlogs/)

@@ -1,39 +1,146 @@
 ---
-title : "Tạo IAM Role"
-date :  "`r Sys.Date()`" 
-weight : 2 
-chapter : false
-pre : " <b> 2.2 </b> "
+title: "Tạo API Gateway và Cấu Hình Các Endpoint với CORS"
+date: "`r Sys.Date()`"
+weight: 4
+chapter: false
+pre: " <b> 2.4 </b> "
 ---
 
-### Tạo IAM Role
+Trong bước này, bạn sẽ tạo một **API Gateway** để cung cấp các HTTP endpoint cho phép gọi các Lambda function. Chúng ta sẽ cấu hình hai endpoint:
 
-Trong bước này chúng ta sẽ tiến hành tạo IAM Role. Trong IAM Role này sẽ được gán policy **AmazonSSMManagedInstanceCore**, đây là policy cho phép máy chủ EC2 có thể giao tiếp với Session Manager.
+- **POST /deploy** → kích hoạt hàm Lambda `upload-function`  
+- **GET /status** → lấy trạng thái triển khai (do `upload-function` xử lý)
 
-1. Truy cập vào [giao diện quản trị dịch vụ IAM](https://console.aws.amazon.com/iamv2/)
-2. Ở thanh điều hướng bên trái, click  **Roles**.  
+Bạn cũng sẽ cấu hình **CORS** để cho phép các yêu cầu từ `http://localhost:3000`.
 
-![role](/images/2.prerequisite/038-iamrole.png)
+---
 
-3. Click **Create role**.  
+#### Bước 1: Tạo HTTP API
 
-![role1](/images/2.prerequisite/039-iamrole.png)
+1. Truy cập [API Gateway Console](https://console.aws.amazon.com/apigateway/home)  
+2. Nhấn **Create API**
 
-4. Click **AWS service** và click **EC2**. 
-  + Click **Next: Permissions**.  
+   ![Create API](/images/2.preparation/001-createapigateway.png)
 
-![role1](/images/2.prerequisite/040-iamrole.png)
+3. Chọn **HTTP API** (không chọn Private)
+4. Nhấn **Build**
 
-5. Trong ô Search, điền **AmazonSSMManagedInstanceCore** và ấn phím Enter để tìm kiếm policy này.
-  + Click chọn policy **AmazonSSMManagedInstanceCore**.
-  + Click **Next: Tags.**
+   ![Build HTTP API](/images/2.preparation/002-createapigateway.png)
 
-![createpolicy](/images/2.prerequisite/041-iamrole.png)
+---
 
-6. Click **Next: Review**.
-7. Đặt tên cho Role là **SSM-Role** ở Role Name  
-  + Click **Create Role** \.
+#### Bước 2: Cấu hình API
 
-![namerole](/images/2.prerequisite/042-iamrole.png)
+1. Nhập **API name**: `DeployAPI`
+2. Nhấn **Create API**
 
-Tiếp theo chúng ta sẽ thực hiện kết nối đến các máy chủ EC2 chúng ta đã tạo bằng **Session Manager**.
+   ![Create API](/images/2.preparation/003-createapigateway.png)
+   ![](/images/2.preparation/004-createapigateway.png)
+   ![](/images/2.preparation/005-createapigateway.png)
+   ![](/images/2.preparation/006-createapigateway.png)
+
+---
+
+#### Bước 3: Tạo Routes và Liên Kết Lambda (HTTP API)
+
+##### Tạo route `/deploy`
+
+1. Chọn HTTP API bạn vừa tạo  
+2. Trong menu bên trái, chọn **Routes**
+3. Nhấn **Create**
+
+   ![](/images/2.preparation/007-createapigateway.png)
+
+4. Nhập:
+   - **Method**: `POST`
+   - **Resource path**: `/deploy`
+5. Nhấn **Create**
+
+   ![](/images/2.preparation/008-createapigateway.png)
+
+##### Gắn Lambda với route `/deploy`
+
+1. Trong tab **Routes**, chọn route `/deploy`
+2. Dưới mục **Integration**, nhấn **Attach integration**
+
+   ![](/images/2.preparation/009-createapigateway.png)
+
+3. Nhấn **Create and attach an integration**
+
+   ![](/images/2.preparation/010-createapigateway.png)
+
+4. Chọn **Lambda function**
+5. Chọn vùng (region) và nhập tên hàm: `upload-function`
+
+   ![](/images/2.preparation/011-createapigateway.png)
+
+6. Nhấn **Create**
+
+   ![](/images/2.preparation/012-createapigateway.png)
+
+---
+
+##### Tạo route `/status`
+
+1. Quay lại tab **Routes** và nhấn **Create**
+
+   ![](/images/2.preparation/013-createapigateway.png)
+
+2. Nhập:
+   - **Method**: `GET`
+   - **Resource path**: `/status`
+3. Nhấn **Create**
+
+   ![](/images/2.preparation/014-createapigateway.png)
+
+##### Gắn Lambda với route `/status`
+
+1. Chọn route `/status`
+2. Nhấn **Attach integration**
+
+   ![](/images/2.preparation/015-createapigateway.png)
+
+3. Chọn `upload-function`
+4. Nhấn **Attach Integration**
+
+   ![](/images/2.preparation/016-createapigateway.png)
+
+---
+
+#### Bước 4: Bật CORS
+
+1. Trong menu bên trái, chọn **CORS**
+2. Nhấn **Configure** cho cả hai phương thức `/deploy` và `/status`
+
+   ![](/images/2.preparation/017-createapigateway.png)
+
+3. Cấu hình các thiết lập CORS:
+   - **Access-Control-Allow-Origin**: `http://localhost:3000`
+   - **Access-Control-Allow-Headers**: `content-type`
+   - **Access-Control-Allow-Methods**: `GET,POST`
+4. Nhấn **Add**
+
+   ![](/images/2.preparation/018-createapigateway.png)
+
+5. Nhấn **Save**
+
+   ![](/images/2.preparation/019-createapigateway.png)
+
+---
+
+#### Tóm Tắt
+
+API Gateway HTTP của bạn hiện đã cung cấp hai endpoint:
+
+| Phương Thức | Đường Dẫn | Lambda Function  | Mô Tả                           |
+|-------------|------------|------------------|----------------------------------|
+| POST        | /deploy    | upload-function  | Tải mã nguồn lên & phát sự kiện |
+| GET         | /status    | upload-function  | Kiểm tra trạng thái triển khai  |
+
+Các endpoint này đã được bật CORS để chấp nhận yêu cầu từ `http://localhost:3000`.
+
+---
+
+#### Bước Tiếp Theo
+
+Bạn có thể chuyển sang [**Chương 3: Kết nối và kiểm tra luồng triển khai**.](../../3-Integration/)

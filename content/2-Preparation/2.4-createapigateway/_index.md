@@ -117,25 +117,13 @@ We will also configure **CORS** to allow requests from `http://localhost:3000`.
    - **Access-Control-Allow-Origin**: `http://localhost:3000`
    - **Access-Control-Allow-Headers**: `content-type`
    - **Access-Control-Allow-Methods**: `GET,POST`
-4. Click **Save**
+4. Click **Add**
 
    ![](/images/2.preparation/018-createapigateway.png)
 
----
+5. Click **Save**
 
-#### Step 5: Deploy the API
-
-1. In the **Deployments** section, make sure your API is deployed to a stage (e.g., `dev`)
-2. If not, click **Deploy**, choose a stage name (like `dev`) and click **Deploy**
-
-You will see the **Invoke URL**, for example: https://abc123.execute-api.ap-southeast-1.amazonaws.com
-
-
-Your final endpoints are:
-
-- `POST https://abc123.execute-api.ap-southeast-1.amazonaws.com/deploy`
-- `GET  https://abc123.execute-api.ap-southeast-1.amazonaws.com/status`
-
+   ![](/images/2.preparation/019-createapigateway.png)
 ---
 
 #### Summary
@@ -152,5 +140,4 @@ These endpoints are CORS-enabled to accept requests from `http://localhost:3000`
 ---
 
 #### Next
-You can now move on to **Chapter 3: Connect and Test Your Deployment Flow**.
-
+You can now move on to [**Chapter 3: Connect and Test Your Deployment Flow**.](../../3-Integration/)
