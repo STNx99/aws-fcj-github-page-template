@@ -22,19 +22,46 @@ Before checking the status, you need to know the deployment `id`. You can find i
 
   ![](/images/4.test/007-dynamodb-record.png)
 
----
+When triggering the `/deploy` endpoint in POSTMAN with:
+
+POST https://j5eeru81c3.execute-api.ap-southeast-1.amazonaws.com/deploy
+
+```json
+{
+    "repoUrl": "https://github.com/TanPhat23/staticwebsite"
+}
+```
+ 
+if successful, you will receive a response similar to the example below:
+
+![](/images/4.test/001-checkstatus.png)
+
+
+In the next step, replace `your-deployment-id` with the actual value of the `id` returned, for example:
+
+your-deployment-id = 35403e3b-3e97-4d67-9fc7-08de9e75ce30
 
 #### Call the /status Endpoint
 
-Once you have the deployment `id`, call the API Gateway endpoint:
+Once you have the deployment `id`, call the API Gateway endpoint to check the status.
 
-Example request using `curl`:
+**Example request using `POSTMAN`:**
 
-```bash
-curl -X GET "https://your-api-id.execute-api.ap-southeast-1.amazonaws.com/prod/status?id=your-deployment-id"
-```
+1. Get your **default endpoint**
 
-Or test it directly in the API Gateway console using the `/status` method with `id` as a query string parameter.
+![](/images/4.test/002-checkstatus.png)
+![](/images/4.test/003-checkstatus.png)
+
+2. Get `id` from `/status` method
+
+![](/images/4.test/004-checkstatus.png)
+
+3. Test **Deployment's status** with **POSTMAN**
+
+GET "https://your-api-id.execute-api.ap-southeast-1.amazonaws.com/status?id=your-deployment-id"
+Example: "https://j5eeru81c3.execute-api.ap-southeast-1.amazonaws.com/status?id=35403e3b-3e97-4d67-9fc7-08de9e75ce30"
+
+![](/images/4.test/005-checkstatus.png)
 
 ---
 
@@ -44,20 +71,18 @@ A successful response might look like this:
 
 ```json
 {
-  "id": "abc123",
-  "status": "uploaded",
-  "timestamp": "2025-08-06T09:23:45Z"
+  "status": "deployed"
 }
 ```
 
-The `status` field could be one of the following:
+The `status` field could be one of the following values:
 
 - `uploaded`: Source code uploaded successfully
-- `deploying`: Deployment process in progress
-- `success`: Deployment completed successfully
-- `failed`: Deployment encountered an error
+- `deployed`: Deployed successfully
 
-You can refresh the request to get the updated status after the Deploy Lambda finishes execution.
+You can refresh the request to get the updated status after the Deploy Lambda function finishes execution.
+
+---
 
 Continue to the next step to learn how to monitor logs and events.
 
