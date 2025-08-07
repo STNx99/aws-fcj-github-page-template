@@ -45,17 +45,17 @@ This function needs access to:
 
 ---
 
-IAM Role for deploy-function
+#### IAM Role for deploy-function
 This function needs access to:
   - Read deployment package from S3
   - Update deployment status in DynamoDB
 
-Attach the following managed policies:
+#### Attach the following managed policies:
   - AmazonS3FullAccess
   - AmazonDynamoDBFullAccess
   - AmazonDynamoDBFullAccess_v2 (optional)
 
-Instructions:
+#### Instructions:
   1. Go to the IAM Console – Roles
   2. Find the role attached to the deploy-function
   3. Click Add permissions → Attach policies
