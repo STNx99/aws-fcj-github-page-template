@@ -20,8 +20,6 @@ Before checking the status, you need to know the deployment `id`. You can find i
 - As part of the response body when the upload API is triggered
 - In the DynamoDB table `DeploymentStatus`
 
-  ![](/images/4.test/007-dynamodb-record.png)
-
 When triggering the `/deploy` endpoint in POSTMAN with:
 
 POST https://j5eeru81c3.execute-api.ap-southeast-1.amazonaws.com/deploy
@@ -59,6 +57,7 @@ Once you have the deployment `id`, call the API Gateway endpoint to check the st
 3. Test **Deployment's status** with **POSTMAN**
 
 GET "https://your-api-id.execute-api.ap-southeast-1.amazonaws.com/status?id=your-deployment-id"
+
 Example: "https://j5eeru81c3.execute-api.ap-southeast-1.amazonaws.com/status?id=35403e3b-3e97-4d67-9fc7-08de9e75ce30"
 
 ![](/images/4.test/005-checkstatus.png)

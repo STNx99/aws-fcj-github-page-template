@@ -16,14 +16,6 @@ These resources are the foundation for the Lambda functions and event-driven pip
 
 ---
 
-### Architecture Overview
-
-Once this step is completed, the initial architecture will look like this:
-
-![Serverless Architecture](/images/arc-lambda-dynamodb.png)
-
----
-
 ### Content
 
 - [2.1.1 Create S3 bucket](2.1.1-creates3bucket/)

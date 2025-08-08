@@ -58,11 +58,11 @@ To allow the `deploy-function` to access DynamoDB and S3, attach the following p
 1. Go to the **Permissions** tab of the function
 2. Click on the role name to open the IAM Console
 
-   ![Go to the Permissions](images/2.preparation/009-createlambdadeploy.png)
+   ![Go to the Permissions](/images/2.preparation/009-createlambdadeploy.png)
 
 3. Click **Add permissions** and choose **Attach policy**
 
-   ![Add permissions](images/2.preparation/010-createlambdadeploy.png)
+   ![Add permissions](/images/2.preparation/010-createlambdadeploy.png)
 
 4. Attach the following AWS managed policies:
    - `AmazonDynamoDBFullAccess`

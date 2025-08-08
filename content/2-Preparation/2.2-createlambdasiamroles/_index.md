@@ -15,12 +15,6 @@ You will also create and configure the **IAM roles** that allow these Lambda fun
 
 ---
 
-### Architecture Overview
-
-![Lambda Architecture](/images/arc-lambda-flow.png)
-
----
-
 ### Content
 
 - [2.2.1 Create Upload Lambda Function](2.2.1-createlambdaupload/)
