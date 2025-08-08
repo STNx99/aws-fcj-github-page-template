@@ -11,6 +11,16 @@ In this step, you will check the status of a deployment request by calling the *
 The Lambda Upload function should have created a new item in the DynamoDB table with a unique `id` and associated metadata (status, timestamp, etc.).
 
 ---
+#### Get API Gateway URL
+To check the deployment status, you need to have the API Gateway URL. This URL is typically in the format: `https://your-api-id.execute-api.region.amazonaws.com/`
+
+Once you have the deployment `id`, call the API Gateway endpoint to check the status.
+
+
+1. Get your **default endpoint**
+
+![](/images/4.test/002-checkstatus.png)
+![](/images/4.test/003-checkstatus.png)
 
 #### Retrieve Deployment ID
 
@@ -22,7 +32,7 @@ Before checking the status, you need to know the deployment `id`. You can find i
 
 When triggering the `/deploy` endpoint in POSTMAN with:
 
-POST https://j5eeru81c3.execute-api.ap-southeast-1.amazonaws.com/deploy
+POST `https://your-api-id.execute-api.ap-southeast-1.amazonaws.com/deploy`
 
 ```json
 {
@@ -41,20 +51,9 @@ your-deployment-id = 35403e3b-3e97-4d67-9fc7-08de9e75ce30
 
 #### Call the /status Endpoint
 
-Once you have the deployment `id`, call the API Gateway endpoint to check the status.
+1. Get the id from the response of the `/deploy` endpoint above or from the DynamoDB table.
 
-**Example request using `POSTMAN`:**
-
-1. Get your **default endpoint**
-
-![](/images/4.test/002-checkstatus.png)
-![](/images/4.test/003-checkstatus.png)
-
-2. Get `id` from `/status` method
-
-![](/images/4.test/004-checkstatus.png)
-
-3. Test **Deployment's status** with **POSTMAN**
+2. Test **Deployment's status** with **POSTMAN**
 
 GET "https://your-api-id.execute-api.ap-southeast-1.amazonaws.com/status?id=your-deployment-id"
 

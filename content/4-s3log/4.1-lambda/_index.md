@@ -1,12 +1,12 @@
 ---
-title: "Upload Source Code via Lambda Upload"
+title: "Upload Source Code to Lambda Upload and Lambda Deploy"
 date: "`r Sys.Date()`"
 weight: 1
 chapter: false
 pre: " <b> 4.1 </b> "
 ---
 
-In this step, you will test the **Lambda Upload function**, which is responsible for:
+In this step, you will test the **Lambda Upload function** and **Lambda Deploy function**, which is responsible for:
 
 - Cloning source code from a GitHub repository  
 - Uploading a zip file to an S3 bucket  
@@ -35,7 +35,7 @@ The `upload` Lambda should perform the following steps:
 ![](/images/4.test/003-uploadlambda.png)
 ![](/images/4.test/004-uploadlambda.png)
 
-3. Upload the zip file to S3
+3. Upload the zip file to lambda
 
 ![](/images/4.test/005-uploadlambda.png)
 ![](/images/4.test/006-uploadlambda.png)
@@ -67,6 +67,12 @@ Before testing, you need to:
 4. Upload the updated zip file (you can create it with `zip -r function.zip .` from your project folder)
 
 ---
+#### Add environment variables (if not yet available)
+1. In the Lambda function configuration, scroll down to **Environment variables**.
+2. Add the following environment variables:
+    - `BUCKET_NAME`: The name of your S3 bucket (e.g., `awsdeplybucket12345`) or your s3 bucket name
+    - `DEPLOYMENT_TABLE_NAME`: The name of your DynamoDB table (e.g., `DeploymentUploaded`) or your custom table name
+![env](/images/4.test/021-env.png)
 
 #### Invoke the Upload Lambda Function (Manual Test)
 
@@ -146,6 +152,44 @@ If the test result is like below then it is correct.
 
 ![](/images/4.test/020-uploadlambda.png)
 
+---
+
+
+#### Upload Lambda Deploy source code (if not yet available)
+1. Zip the source code upload on `awscode/lambdacode/deploy` (follow the same steps as the upload function)
+
+2. Upload the zip file to lambda (follow the same steps as the upload function)
+
+#### Add environment variables for lambda deploy (if not yet available)
+1. In the Lambda function configuration, scroll down to **Environment variables**.
+2. Add the following environment variables:
+    - `BUCKET_NAME`: The name of your S3 bucket (e.g., `awsdeplybucket12345`) or your s3 bucket name
+    - `DEPLOYMENT_TABLE_NAME`: The name of your DynamoDB table (e.g., `DeploymentUploaded`) or your custom table name
+![env](/images/4.test/021-env.png)
+
+#### Invoke the Deploy Lambda Function (Manual Test)
+Resend the custom event to the `upload` Lambda function to test the deployment process.
+1. Go to the [Lambda Console](https://console.aws.amazon.com/lambda/)
+2. Select the function named `upload-function`
+3. Open the **Test** tab
+4. Create a new test event with the following content (if haven't already created):
+
+```json
+{
+  "httpMethod": "POST",
+  "path": "/deploy",
+  "body": "{\"repoUrl\": \"https://github.com/TanPhat23/staticwebsite\"}"
+}
+```
+![](/images/4.test/013-uploadlambda.png)
+5. Click **Test** to invoke the Lambda function.
+![](/images/4.test/014-uploadlambda.png)
+
+#### Check the S3 bucket
+1. Go to the [Amazon S3 Console](https://s3.console.aws.amazon.com/s3/home)
+2. Open the bucket `awsdeplybucket12345`
+3. There should be a new folder named `dist` containing the deployed files
+![](/images/4.test/022-deploylambda.png)
 ---
 
 After completing this step, the `deploy` Lambda function should be automatically triggered  
