@@ -21,7 +21,9 @@ You may have configured the following endpoints:
 
 2. In the left-hand menu, choose **APIs**
 
-3. Locate the API you created (for example, `website-deploy-api`)
+3. Locate the API you created (for example, `DeployAPI`)
+
+![](/images/6.clean/001-deleteapigateway.png)
 
 ---
 
@@ -33,11 +35,19 @@ You may have configured the following endpoints:
 
 3. Take note of the API ID and stage name (optional, for documentation)
 
+![](/images/6.clean/002-deleteapigateway.png)
+
 4. Return to the main API settings
 
-5. In the top-right corner, click **Actions** → **Delete**
+![](/images/6.clean/003-deleteapigateway.png)
+
+5. In the top-right corner, click **Delete**
+
+![](/images/6.clean/004-deleteapigateway.png)
 
 6. Confirm the deletion by clicking **Delete**
+
+![](/images/6.clean/005-deleteapigateway.png)
 
 ---
 

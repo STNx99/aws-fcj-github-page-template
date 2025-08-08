@@ -21,6 +21,8 @@ This is usually done during cleanup or when re-deploying with significant change
 
 2. In the left-hand menu, click **Functions**
 
+![](/images/6.clean/001-deletelambdafunctions.png)
+
 ---
 
 #### Delete the `upload-function`
@@ -33,7 +35,11 @@ This is usually done during cleanup or when re-deploying with significant change
 
 4. Select **Delete**
 
+![](/images/6.clean/002-deletelambdafunctions.png)
+
 5. In the confirmation popup, type the function name and click **Delete**
+
+![](/images/6.clean/003-deletelambdafunctions.png)
 
 ---
 
@@ -41,12 +47,17 @@ This is usually done during cleanup or when re-deploying with significant change
 
 1. Return to the **Functions** list
 
-2. In the search bar, type `deploy-function`
+2. Click on the function name to open its details
 
-3. Repeat the same steps:
-   - Click the function name
-   - Go to **Actions** → **Delete**
-   - Confirm by entering the function name and click **Delete**
+3. In the top-right corner, click the **Actions** dropdown
+
+4. Select **Delete**
+
+![](/images/6.clean/004-deletelambdafunctions.png)
+
+5. In the confirmation popup, type the function name and click **Delete**
+
+![](/images/6.clean/005-deletelambdafunctions.png)
 
 ---
 

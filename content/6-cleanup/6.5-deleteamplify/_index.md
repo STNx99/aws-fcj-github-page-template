@@ -46,13 +46,23 @@ And a **custom inline policy** like:
 
 2. In the search bar, enter `upload-function-role` and select it
 
+![](/images/6.clean/001-deleteamplify.png)
+
 3. Review the attached policies
 
 4. Detach any managed policies if necessary
 
+![](/images/6.clean/002-deleteamplify.png)
+
 5. Click **Delete** and confirm
 
+![](/images/6.clean/003-deleteamplify.png)
+
 6. Repeat the same steps for `deploy-function-role`
+
+![](/images/6.clean/004-deleteamplify.png)
+![](/images/6.clean/005-deleteamplify.png)
+![](/images/6.clean/006-deleteamplify.png)
 
 ---
 
@@ -62,11 +72,16 @@ If you created any custom inline policies manually:
 
 1. In the **Roles** page, click the role name
 
+![](/images/6.clean/007-deleteamplify.png)
+
 2. Scroll to the **Permissions policies** section
 
 3. If you see any custom policy, click its name
 
-4. Choose **Delete policy**
+4. Choose **Remove**
+
+![](/images/6.clean/008-deleteamplify.png)
+![](/images/6.clean/009-deleteamplify.png)
 
 > **Note:** Managed policies (like `AmazonS3FullAccess`) do not need to be deleted unless you created a custom version.
 

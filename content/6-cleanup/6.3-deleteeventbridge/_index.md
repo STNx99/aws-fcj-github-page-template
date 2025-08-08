@@ -21,13 +21,19 @@ Resources to delete:
 
 2. In the top-left dropdown, select the **upload** event bus
 
+![](/images/6.clean/001-deleteeventbridge.png)
+
 3. Find the rule named `uploaded_success`
 
 4. Click the checkbox next to the rule
 
-5. Click **Actions** → **Delete**
+5. Click **Delete**
+
+![](/images/6.clean/002-deleteeventbridge.png)
 
 6. Confirm the deletion by clicking **Delete**
+
+![](/images/6.clean/003-deleteeventbridge.png)
 
 ---
 
@@ -37,11 +43,17 @@ Resources to delete:
 
 2. Locate the custom event bus named `upload`
 
+![](/images/6.clean/004-deleteeventbridge.png)
+
 3. Click the checkbox next to it
 
 4. Click **Delete**
 
+![](/images/6.clean/005-deleteeventbridge.png)
+
 5. Confirm the deletion by clicking **Delete**
+
+![](/images/6.clean/006-deleteeventbridge.png)
 
 > Note: You must delete all rules attached to the event bus before deleting the bus itself.
 
