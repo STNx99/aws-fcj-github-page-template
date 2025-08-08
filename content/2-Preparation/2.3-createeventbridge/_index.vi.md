@@ -1,16 +1,16 @@
 ---
-title: "Tạo Event Bus và Rule trên EventBridge"
+title: "Tạo EventBridge Event Bus và Rule"
 date: "`r Sys.Date()`"
 weight: 3
 chapter: false
 pre: " <b> 2.3 </b> "
 ---
 
-Trong bước này, bạn sẽ thiết lập **Event Bus** và **Rule** trong **Amazon EventBridge** để kết nối giữa `upload-function` và `deploy-function`.
+Trong bước này, bạn sẽ thiết lập **EventBridge Event Bus** và một **Rule (quy tắc)** để kết nối giữa `upload-function` và `deploy-function`.
 
-Sau khi hoàn tất, luồng sự kiện tự động sẽ như sau:
+Sau khi hoàn thành, luồng hoạt động theo sự kiện sẽ như sau:
 
-> `upload-function` → (gửi sự kiện) → `EventBridge` → (rule khớp) → `deploy-function`
+> `upload-function` → (gửi event) → `EventBridge` → (khớp rule) → `deploy-function`
 
 ---
 
@@ -18,7 +18,7 @@ Sau khi hoàn tất, luồng sự kiện tự động sẽ như sau:
 
 1. Truy cập [Amazon EventBridge Console](https://console.aws.amazon.com/events/home)
 
-2. Ở menu bên trái, chọn **Event buses**
+2. Trong menu bên trái, nhấn **Event buses**
 
    ![Click Event Bus](/images/2.preparation/001-createbus.png)
 
@@ -26,9 +26,9 @@ Sau khi hoàn tất, luồng sự kiện tự động sẽ như sau:
 
    ![Create Event Bus](/images/2.preparation/002-createbus.png)
 
-4. Nhập các thông tin sau:
+4. Nhập thông tin sau:
    - **Name**: `upload`
-   - Các cài đặt khác giữ mặc định
+   - Giữ nguyên các thiết lập mặc định khác
 
    ![Enter the following name](/images/2.preparation/003-createbus.png)
 
@@ -38,11 +38,11 @@ Sau khi hoàn tất, luồng sự kiện tự động sẽ như sau:
 
 ---
 
-#### Tạo Event Rule: `uploaded_success`
+#### Tạo Rule: `uploaded_success`
 
 1. Truy cập [EventBridge Rules Console](https://console.aws.amazon.com/events/home#/rules)
 
-2. Đảm bảo bạn đã chọn đúng **event bus** tên là `upload`
+2. Đảm bảo bạn đã chọn **upload** event bus
 
 3. Nhấn **Create rule**
 
@@ -61,15 +61,15 @@ Sau khi hoàn tất, luồng sự kiện tự động sẽ như sau:
 
 ---
 
-#### Thêm Mẫu Sự Kiện (Event Pattern)
+#### Thêm Event Pattern
 
-1. Trong phần **Events**:
+1. Ở mục **Events**:
    - **Event source**: `Other`
 
-2. Ở mục **Event pattern**, chọn:  
+2. Tại **Event pattern**, chọn:  
    - **Custom pattern (JSON editor)**
 
-3. Dán mẫu JSON sau:
+3. Dán đoạn pattern sau vào:
 
 ```json
 {
@@ -78,42 +78,42 @@ Sau khi hoàn tất, luồng sự kiện tự động sẽ như sau:
 }
 ```
 
-![Thêm Mẫu Sự Kiện](/images/2.preparation/008-createbus.png)
+  ![Thêm Event Pattern](/images/2.preparation/008-createbus.png)
 
 4. Nhấn **Next**
 
-![Nhấn Next](/images/2.preparation/009-createbus.png)
+  ![Nhấn Next](/images/2.preparation/009-createbus.png)
 
----
+5. Thiết lập Target là Lambda Deploy
 
-#### Cấu Hình Mục Tiêu (Target) Cho Rule
+Tại phần **Target**:
 
-Trong phần **Target**:
+  - **Target type**: AWS service
 
-- **Target type**: AWS service  
-- **Service**: Lambda function  
-- **Function**: `deploy-function`
+  - **Service**: Lambda function
 
-![Chọn Lambda Function làm mục tiêu](/images/2.preparation/010-createbus.png)
+  - **Function**: deploy-function
+
+  ![Thiết lập Target là Lambda Deploy](/images/2.preparation/010-createbus.png)
 
 6. Nhấn **Next**
 
-![Nhấn Next](/images/2.preparation/011-createbus.png)
+  ![Nhấn Next](/images/2.preparation/011-createbus.png)
 
 7. Xem lại cấu hình rule và nhấn **Next**
 
-![Xem lại cấu hình](/images/2.preparation/012-createbus.png)
+  ![Xem lại cấu hình](/images/2.preparation/012-createbus.png)
 
-8. Nhấn **Create rule** để hoàn tất
+8. Nhấn **Create rule**
 
-![Tạo Rule](/images/2.preparation/013-createbus.png)
+  ![Nhấn Create rule](/images/2.preparation/013-createbus.png)
 
----
-
-Bây giờ, khi `upload-function` phát sự kiện `DeploymentUploaded`, EventBridge sẽ tự động kích hoạt `deploy-function`.
+Bây giờ, khi `upload-function` phát ra một sự kiện `DeploymentUploaded`, EventBridge sẽ tự động kích hoạt `deploy-function`.
 
 ---
 
-#### Bước Tiếp Theo
+#### Bước tiếp theo
 
-Tiếp tục đến [Tạo API Gateway và Cấu Hình CORS](../2.4-createapigateway/)
+Tiếp tục với [Tạo API Gateway và Cấu hình CORS](../2.4-createapigateway/)
+
+
