@@ -1,119 +1,63 @@
 ---
-title: "Tạo Event Bus và Rule trên EventBridge"
+title: "Xóa các hàm Lambda"
 date: "`r Sys.Date()`"
-weight: 3
+weight: 10
 chapter: false
-pre: " <b> 2.3 </b> "
+pre: " <b> 6.1 </b> "
 ---
 
-Trong bước này, bạn sẽ thiết lập **Event Bus** và **Rule** trong **Amazon EventBridge** để kết nối giữa `upload-function` và `deploy-function`.
+Trong bước này, bạn sẽ xóa các **hàm Lambda** đã được tạo ra cho hệ thống triển khai, cụ thể là:
 
-Sau khi hoàn tất, luồng sự kiện tự động sẽ như sau:
+- `upload-function`  
+- `deploy-function`
 
-> `upload-function` → (gửi sự kiện) → `EventBridge` → (rule khớp) → `deploy-function`
-
----
-
-#### Tạo Event Bus
-
-1. Truy cập [Amazon EventBridge Console](https://console.aws.amazon.com/events/home)
-
-2. Ở menu bên trái, chọn **Event buses**
-
-   ![Click Event Bus](/images/2.preparation/001-createbus.png)
-
-3. Nhấn **Create event bus**
-
-   ![Create Event Bus](/images/2.preparation/002-createbus.png)
-
-4. Nhập các thông tin sau:
-   - **Name**: `upload`
-   - Các cài đặt khác giữ mặc định
-
-   ![Enter the following name](/images/2.preparation/003-createbus.png)
-
-5. Nhấn **Create event bus**
-
-   ![Click Create event bus](/images/2.preparation/004-createbus.png)
+Việc này thường được thực hiện trong quá trình dọn dẹp hoặc khi triển khai lại với các thay đổi đáng kể.
 
 ---
 
-#### Tạo Event Rule: `uploaded_success`
+#### Mở Bảng điều khiển Lambda
 
-1. Truy cập [EventBridge Rules Console](https://console.aws.amazon.com/events/home#/rules)
+1. Truy cập vào [AWS Lambda Console](https://console.aws.amazon.com/lambda/)
+2. Trong menu bên trái, nhấp vào **Functions (Hàm)**
 
-2. Đảm bảo bạn đã chọn đúng **event bus** tên là `upload`
-
-3. Nhấn **Create rule**
-
-   ![Click Create rule](/images/2.preparation/005-createbus.png)
-
-4. Nhập thông tin rule:
-   - **Name**: `uploaded_success`
-   - **Event bus**: `upload`
-   - **Rule type**: `Rule with an event pattern`
-
-   ![Enter rule](/images/2.preparation/006-createbus.png)
-
-5. Nhấn **Next**
-
-   ![Click Next](/images/2.preparation/007-createbus.png)
+![](/images/6.clean/001-deletelambdafunctions.png)
 
 ---
 
-#### Thêm Mẫu Sự Kiện (Event Pattern)
+#### Xóa hàm `upload-function`
 
-1. Trong phần **Events**:
-   - **Event source**: `Other`
+1. Trong thanh tìm kiếm, nhập `upload-function`
+2. Nhấp vào tên hàm để mở chi tiết
+3. Ở góc trên bên phải, nhấp vào nút **Actions (Hành động)**
+4. Chọn **Delete (Xóa)**
 
-2. Ở mục **Event pattern**, chọn:  
-   - **Custom pattern (JSON editor)**
+![](/images/6.clean/002-deletelambdafunctions.png)
 
-3. Dán mẫu JSON sau:
+5. Trong cửa sổ xác nhận, nhập lại tên hàm và nhấp **Delete (Xóa)**
 
-```json
-{
-  "source": ["dewebdeploy.upload"],
-  "detail-type": ["DeploymentUploaded"]
-}
-```
-
-![Thêm Mẫu Sự Kiện](/images/2.preparation/008-createbus.png)
-
-4. Nhấn **Next**
-
-![Nhấn Next](/images/2.preparation/009-createbus.png)
+![](/images/6.clean/003-deletelambdafunctions.png)
 
 ---
 
-#### Cấu Hình Mục Tiêu (Target) Cho Rule
+#### Xóa hàm `deploy-function`
 
-Trong phần **Target**:
+1. Quay lại danh sách **Functions**
+2. Nhấp vào tên hàm `deploy-function` để mở chi tiết
+3. Ở góc trên bên phải, nhấp vào **Actions**
+4. Chọn **Delete**
 
-- **Target type**: AWS service  
-- **Service**: Lambda function  
-- **Function**: `deploy-function`
+![](/images/6.clean/004-deletelambdafunctions.png)
 
-![Chọn Lambda Function làm mục tiêu](/images/2.preparation/010-createbus.png)
+5. Trong cửa sổ xác nhận, nhập lại tên hàm và nhấp **Delete**
 
-6. Nhấn **Next**
-
-![Nhấn Next](/images/2.preparation/011-createbus.png)
-
-7. Xem lại cấu hình rule và nhấn **Next**
-
-![Xem lại cấu hình](/images/2.preparation/012-createbus.png)
-
-8. Nhấn **Create rule** để hoàn tất
-
-![Tạo Rule](/images/2.preparation/013-createbus.png)
+![](/images/6.clean/005-deletelambdafunctions.png)
 
 ---
 
-Bây giờ, khi `upload-function` phát sự kiện `DeploymentUploaded`, EventBridge sẽ tự động kích hoạt `deploy-function`.
+Sau khi bị xóa, các hàm Lambda sẽ không còn tồn tại trong tài khoản AWS của bạn, và bất kỳ trigger (như EventBridge rule) nào liên kết với chúng cũng sẽ không hoạt động cho đến khi được cấu hình lại.
 
 ---
 
-#### Bước Tiếp Theo
+#### Bước tiếp theo
 
-Tiếp tục đến [Tạo API Gateway và Cấu Hình CORS](../2.4-createapigateway/)
+Tiếp tục đến [6.2 – Xóa tài nguyên EventBridge](../6.2-deletes3dynamodb/)

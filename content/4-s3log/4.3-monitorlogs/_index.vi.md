@@ -1,29 +1,42 @@
 ---
-title : "Tạo S3 Gateway endpoint"
-date :  "`r Sys.Date()`" 
-weight : 3
-chapter : false
-pre : " <b> 4.3 </b> "
+title: "Giám sát Logs và Sự kiện"
+date: "`r Sys.Date()`"
+weight: 3
+chapter: false
+pre: " <b> 4.3 </b> "
 ---
 
+Trong bước này, bạn sẽ học cách giám sát các log và sự kiện được tạo ra bởi các hàm Lambda và quy tắc EventBridge để đảm bảo quy trình triển khai (deployment pipeline) hoạt động chính xác.
 
-1. Truy cập vào [giao diện quản trị dịch vụ VPC](https://console.aws.amazon.com/vpc/home)
-  + Click **Endpoints**.
-  + Click **Create endpoint**.
+#### Giám sát Log của Lambda trên CloudWatch
 
-2. Tại trang **Create endpoint**.
-  + Tại mục **Name tag** điền **S3GW**.
-  + Tại mục **Service Category** click chọn **AWS services**.
-  + Tại ô tìm kiếm điền **S3**, sau đó chọn **com.amazonaws.[region].s3**
+1. Truy cập [CloudWatch Console](https://console.aws.amazon.com/cloudwatch/home).
+2. Nhấp vào **Logs** trong thanh bên trái.
+3. Tìm các nhóm log cho hàm Lambda của bạn (ví dụ: `/aws/lambda/upload-function` và `/aws/lambda/deploy-function`).
 
-![S3](/images/4.s3/008-s3.png)
+![CloudWatch Logs](/images/4.test/001-monitorlogs.png)
 
-3. Tại mục **Services** chọn **com.amazonaws.[region].s3** có Type là **Gateway**.
-  + Tại mục **VPC** , chọn **Lab VPC**.
-  + Tại mục **Route tables**, chọn cả 2 route table.
-  
-![S3](/images/4.s3/009-s3.png)
+4. Nhấp vào nhóm log và xem các luồng log gần đây để kiểm tra chi tiết quá trình thực thi, lỗi và thông điệp hệ thống.
 
-4. Kéo chuột xuống dưới cùng, click **Create endpoint**.
+![](/images/4.test/002-monitorlogs.png)
 
-Bước tiếp theo chúng ta sẽ tiến hành cấu hình Session Manager để có thể lưu trữ các session logs tới S3 bucket chúng ta đã tạo.
+#### Kiểm tra sự kiện từ EventBridge
+
+1. Truy cập [EventBridge Console](https://console.aws.amazon.com/events/home).
+2. Nhấp vào **Event buses**, sau đó chọn bus sự kiện tùy chỉnh có tên **upload**.
+
+![](/images/4.test/003-monitorlogs.png)
+
+3. Điều hướng đến tab **Monitoring**.
+4. Nhấp vào **View metrics in CloudWatch** để xem các số liệu thống kê về lượt gọi và trạng thái xử lý sự kiện.
+
+![](/images/4.test/004-monitorlogs.png)
+![EventBridge Metrics](/images/4.test/006-monitorlogs.png)
+
+---
+
+Bằng cách thường xuyên kiểm tra các log và sự kiện này, bạn có thể nhanh chóng phát hiện và xử lý các vấn đề trong quy trình triển khai.
+
+Tiếp tục bước tiếp theo để tìm hiểu cách triển khai sản phẩm và tích hợp với giao diện người dùng (frontend).
+
+[Tiếp theo: Triển khai sản phẩm và tích hợp giao diện](../5-deploytoamplify/)

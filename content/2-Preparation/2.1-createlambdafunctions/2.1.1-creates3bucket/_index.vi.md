@@ -6,11 +6,11 @@ chapter: false
 pre: " <b> 2.1.1 </b> "
 ---
 
-Trong bước này, bạn sẽ tạo một **Amazon S3 bucket** để lưu trữ các gói triển khai và lưu trữ website tĩnh của bạn. Bucket này sau đó sẽ được các hàm Lambda sử dụng để tải lên các file triển khai, và frontend sẽ dùng để phục vụ nội dung đã triển khai.
+Trong bước này, bạn sẽ tạo một **Amazon S3 bucket** để lưu trữ các gói mã nguồn triển khai và host trang web tĩnh của bạn. Bucket này sẽ được sử dụng bởi các hàm Lambda để tải lên các tệp triển khai, và được frontend sử dụng để hiển thị nội dung đã triển khai.
 
 ---
 
-#### Tạo S3 bucket
+#### Tạo S3 Bucket
 
 1. Truy cập [Amazon S3 Console](https://s3.console.aws.amazon.com/s3/)
 
@@ -20,69 +20,69 @@ Trong bước này, bạn sẽ tạo một **Amazon S3 bucket** để lưu trữ
 
 3. Cấu hình bucket:
 
-   - **Tên bucket**: `awsdeplybucket12345`  
-     *(Đảm bảo tên này là duy nhất trên toàn cầu)*
-   - **Khu vực (Region)**: Chọn cùng khu vực với nơi các hàm Lambda của bạn chạy (ví dụ: `Asia Pacific (Singapore) ap-southeast-1`)
-   - Giữ các tùy chọn còn lại mặc định:
-     - **Block all public access**: BẬT *(sẽ cấu hình truy cập công khai để hosting website ở bước sau)*
+   - **Bucket name**: `awsdeplybucket12345`  
+     *(Đảm bảo tên là duy nhất trên toàn cầu)*
+   - **Region**: Chọn khu vực giống với nơi bạn triển khai Lambda (ví dụ: `Asia Pacific (Singapore) ap-southeast-1`)
+   - Giữ nguyên các thiết lập mặc định:
+     - **Block all public access**: BẬT *(chúng ta sẽ bật quyền truy cập công khai sau để host website)*
      - **Versioning**: TẮT
 
    ![Bucket Config](/images/2.preparation/002-createbucket.png)
    ![Turn off Block](/images/2.preparation/003-createbucket.png)
 
-4. Kéo xuống dưới cùng và nhấn **Create bucket**
+4. Kéo xuống và nhấn **Create bucket**
 
-   Sau khi tạo, bucket sẽ xuất hiện trong danh sách bucket.
+   Sau khi tạo xong, bucket sẽ hiển thị trong danh sách.
 
    ![Create Bucket](/images/2.preparation/004-createbucket.png)
 
 ---
 
-#### Bật tính năng Hosting Website Tĩnh
+#### Bật Chức Năng Host Website Tĩnh
 
-1. Nhấn vào tên bucket vừa tạo trong S3 Console.
+1. Nhấn vào tên bucket mới được tạo trong S3 Console.
 
-![Click on the newly created bucket name in the S3 Console](/images/2.preparation/005-createbucket.png)
+![Chọn bucket mới tạo](/images/2.preparation/005-createbucket.png)
 
 2. Chuyển sang tab **Properties**.
 
-![Navigate to the Properties tab](/images/2.preparation/006-createbucket.png)
+![Tab Properties](/images/2.preparation/006-createbucket.png)
 
 3. Kéo xuống phần **Static website hosting**.
 
-![Scroll down to the Static website hosting](/images/2.preparation/007-createbucket.png)
+![Static website hosting](/images/2.preparation/007-createbucket.png)
 
-4. Nhấn **Edit**, chọn:
+4. Nhấn **Edit**, sau đó chọn:
    - **Hosting type**: `Host a static website`
    - **Index document**: `index.html`
-   - *(Tùy chọn)* **Error document**: `error.html`
+   - *(Tuỳ chọn)* **Error document**: `error.html`
 
-![Setup Static website hosting](/images/2.preparation/008-createbucket.png)
+![Cấu hình Static hosting](/images/2.preparation/008-createbucket.png)
 
 5. Nhấn **Save changes**.
 
-![Click Save changes](/images/2.preparation/009-createbucket.png)
+![Save changes](/images/2.preparation/009-createbucket.png)
 
-> **Lưu ý**: Bạn sẽ cần cấu hình bucket policy để cho phép truy cập công khai đọc file ở bước triển khai sau.
+> **Lưu ý**: Bạn cần cấu hình chính sách bucket để cho phép truy cập công khai ở bước triển khai sau.
 
 ---
 
-#### Cấu hình Bucket Policy
+#### Thiết Lập Chính Sách Bucket
 
-Để cho phép truy cập công khai phục vụ website tĩnh, bạn cần cấu hình **bucket policy** như sau:
+Để cho phép truy cập công khai phục vụ trang web tĩnh, bạn cần cấu hình **bucket policy**:
 
-1. Trong S3 Console, chọn bucket của bạn, sau đó vào tab **Permissions**.
+1. Trong S3 Console, chọn bucket của bạn, sau đó đi đến tab **Permissions**.
 
-![](/images/2.preparation/010-createbucket.png)  
+![](/images/2.preparation/010-createbucket.png)
 ![](/images/2.preparation/011-createbucket.png)
 
-2. Kéo xuống mục **Bucket policy**, nhấn **Edit**.
+2. Kéo xuống phần **Bucket policy** và nhấn **Edit**.
 
 ![](/images/2.preparation/012-createbucket.png)
 
-3. Dán đoạn policy sau vào trình chỉnh sửa, thay thế tên bucket nếu cần:
+3. Dán đoạn policy sau vào ô chỉnh sửa, thay tên bucket nếu cần:
 
-   ```json
+  ```json
    {
      "Version": "2012-10-17",
      "Statement": [
@@ -95,17 +95,17 @@ Trong bước này, bạn sẽ tạo một **Amazon S3 bucket** để lưu trữ
        }
      ]
    }
-   ```
-
+  ```
 ![](/images/2.preparation/013-createbucket.png)
 
-4. Nhấn Save changes.
+4. Nhấn **Save changes** để lưu thay đổi.
 
 ![](/images/2.preparation/014-createbucket.png)
 
-Chính sách này cho phép truy cập công khai để đọc tất cả các đối tượng trong bucket. Hãy chắc chắn điều này phù hợp với mục đích của bạn (ví dụ: hosting file website công khai).
+Chính sách này cho phép mọi người có thể đọc công khai tất cả các tệp trong bucket của bạn. Hãy chắc chắn rằng điều này phù hợp với mục đích sử dụng của bạn (ví dụ: lưu trữ các tệp trang web công khai).
 
 ---
 
 #### Bước tiếp theo
-Tiếp tục sang [Tạo bảng DynamoDB](../2.1.2-createdynamodb/)
+
+Tiếp tục đến [Tạo bảng DynamoDB](../2.1.2-createdynamodb/)

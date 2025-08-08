@@ -1,119 +1,68 @@
 ---
-title: "Tạo Event Bus và Rule trên EventBridge"
+title: "Xóa API Gateway"
 date: "`r Sys.Date()`"
-weight: 3
+weight: 13
 chapter: false
-pre: " <b> 2.3 </b> "
+pre: " <b> 6.4 </b> "
 ---
 
-Trong bước này, bạn sẽ thiết lập **Event Bus** và **Rule** trong **Amazon EventBridge** để kết nối giữa `upload-function` và `deploy-function`.
+Trong bước này, bạn sẽ xóa **API Gateway** đã được tạo để cung cấp các hàm Lambda dưới dạng endpoint HTTP.
 
-Sau khi hoàn tất, luồng sự kiện tự động sẽ như sau:
+Bạn có thể đã cấu hình các endpoint sau:
 
-> `upload-function` → (gửi sự kiện) → `EventBridge` → (rule khớp) → `deploy-function`
-
----
-
-#### Tạo Event Bus
-
-1. Truy cập [Amazon EventBridge Console](https://console.aws.amazon.com/events/home)
-
-2. Ở menu bên trái, chọn **Event buses**
-
-   ![Click Event Bus](/images/2.preparation/001-createbus.png)
-
-3. Nhấn **Create event bus**
-
-   ![Create Event Bus](/images/2.preparation/002-createbus.png)
-
-4. Nhập các thông tin sau:
-   - **Name**: `upload`
-   - Các cài đặt khác giữ mặc định
-
-   ![Enter the following name](/images/2.preparation/003-createbus.png)
-
-5. Nhấn **Create event bus**
-
-   ![Click Create event bus](/images/2.preparation/004-createbus.png)
+- `POST /deploy` → gọi đến `upload-function`  
+- `GET /status` → gọi đến `upload-function`
 
 ---
 
-#### Tạo Event Rule: `uploaded_success`
+#### Mở Bảng điều khiển API Gateway
 
-1. Truy cập [EventBridge Rules Console](https://console.aws.amazon.com/events/home#/rules)
+1. Truy cập [Amazon API Gateway Console](https://console.aws.amazon.com/apigateway/)
 
-2. Đảm bảo bạn đã chọn đúng **event bus** tên là `upload`
+2. Trong menu bên trái, chọn **APIs**
 
-3. Nhấn **Create rule**
+3. Tìm API mà bạn đã tạo (ví dụ: `DeployAPI`)
 
-   ![Click Create rule](/images/2.preparation/005-createbus.png)
-
-4. Nhập thông tin rule:
-   - **Name**: `uploaded_success`
-   - **Event bus**: `upload`
-   - **Rule type**: `Rule with an event pattern`
-
-   ![Enter rule](/images/2.preparation/006-createbus.png)
-
-5. Nhấn **Next**
-
-   ![Click Next](/images/2.preparation/007-createbus.png)
+![](/images/6.clean/001-deleteapigateway.png)
 
 ---
 
-#### Thêm Mẫu Sự Kiện (Event Pattern)
+#### Xóa API
 
-1. Trong phần **Events**:
-   - **Event source**: `Other`
+1. Nhấp vào tên API để mở chi tiết
 
-2. Ở mục **Event pattern**, chọn:  
-   - **Custom pattern (JSON editor)**
+2. Trong menu bên trái, cuộn xuống và nhấp vào **Stages**
 
-3. Dán mẫu JSON sau:
+3. Ghi lại API ID và tên stage (tùy chọn, để phục vụ mục đích ghi chú)
 
-```json
-{
-  "source": ["dewebdeploy.upload"],
-  "detail-type": ["DeploymentUploaded"]
-}
-```
+![](/images/6.clean/002-deleteapigateway.png)
 
-![Thêm Mẫu Sự Kiện](/images/2.preparation/008-createbus.png)
+4. Quay lại trang cấu hình chính của API
 
-4. Nhấn **Next**
+![](/images/6.clean/003-deleteapigateway.png)
 
-![Nhấn Next](/images/2.preparation/009-createbus.png)
+5. Ở góc trên bên phải, nhấp vào **Delete**
 
----
+![](/images/6.clean/004-deleteapigateway.png)
 
-#### Cấu Hình Mục Tiêu (Target) Cho Rule
+6. Xác nhận việc xóa bằng cách nhấp **Delete**
 
-Trong phần **Target**:
-
-- **Target type**: AWS service  
-- **Service**: Lambda function  
-- **Function**: `deploy-function`
-
-![Chọn Lambda Function làm mục tiêu](/images/2.preparation/010-createbus.png)
-
-6. Nhấn **Next**
-
-![Nhấn Next](/images/2.preparation/011-createbus.png)
-
-7. Xem lại cấu hình rule và nhấn **Next**
-
-![Xem lại cấu hình](/images/2.preparation/012-createbus.png)
-
-8. Nhấn **Create rule** để hoàn tất
-
-![Tạo Rule](/images/2.preparation/013-createbus.png)
+![](/images/6.clean/005-deleteapigateway.png)
 
 ---
 
-Bây giờ, khi `upload-function` phát sự kiện `DeploymentUploaded`, EventBridge sẽ tự động kích hoạt `deploy-function`.
+Sau bước này, các endpoint API sẽ không còn khả dụng công khai và quyền truy cập HTTP vào các hàm Lambda của bạn sẽ bị xóa bỏ.
 
 ---
 
-#### Bước Tiếp Theo
+#### (Tùy chọn) Xóa cấu hình CORS
 
-Tiếp tục đến [Tạo API Gateway và Cấu Hình CORS](../2.4-createapigateway/)
+Nếu bạn đã thêm tiêu đề CORS vào API (thủ công hoặc qua bảng điều khiển), những thiết lập đó cũng sẽ bị xóa cùng với API.
+
+Không cần thêm bước nào khác.
+
+---
+
+#### Bước tiếp theo
+
+Tiếp tục đến [6.5 – Xóa IAM Roles và Policies](../6.5-deleteiam/)

@@ -1,119 +1,68 @@
 ---
-title: "Tạo Event Bus và Rule trên EventBridge"
+title: "Xóa Tài Nguyên EventBridge"
 date: "`r Sys.Date()`"
-weight: 3
+weight: 12
 chapter: false
-pre: " <b> 2.3 </b> "
+pre: " <b> 6.3 </b> "
 ---
 
-Trong bước này, bạn sẽ thiết lập **Event Bus** và **Rule** trong **Amazon EventBridge** để kết nối giữa `upload-function` và `deploy-function`.
+Trong bước này, bạn sẽ xóa các tài nguyên **EventBridge** đã được sử dụng để kết nối giữa `upload-function` và `deploy-function`.
 
-Sau khi hoàn tất, luồng sự kiện tự động sẽ như sau:
+Tài nguyên cần xóa:
 
-> `upload-function` → (gửi sự kiện) → `EventBridge` → (rule khớp) → `deploy-function`
-
----
-
-#### Tạo Event Bus
-
-1. Truy cập [Amazon EventBridge Console](https://console.aws.amazon.com/events/home)
-
-2. Ở menu bên trái, chọn **Event buses**
-
-   ![Click Event Bus](/images/2.preparation/001-createbus.png)
-
-3. Nhấn **Create event bus**
-
-   ![Create Event Bus](/images/2.preparation/002-createbus.png)
-
-4. Nhập các thông tin sau:
-   - **Name**: `upload`
-   - Các cài đặt khác giữ mặc định
-
-   ![Enter the following name](/images/2.preparation/003-createbus.png)
-
-5. Nhấn **Create event bus**
-
-   ![Click Create event bus](/images/2.preparation/004-createbus.png)
+- Quy tắc sự kiện: `uploaded_success`  
+- Event bus: `upload`
 
 ---
 
-#### Tạo Event Rule: `uploaded_success`
+#### Xóa Quy Tắc Sự Kiện (Event Rule)
 
-1. Truy cập [EventBridge Rules Console](https://console.aws.amazon.com/events/home#/rules)
+1. Truy cập [Amazon EventBridge Console – Rules](https://console.aws.amazon.com/events/home#/rules)
 
-2. Đảm bảo bạn đã chọn đúng **event bus** tên là `upload`
+2. Ở góc trên bên trái, chọn **upload** trong danh sách event bus
 
-3. Nhấn **Create rule**
+![](/images/6.clean/001-deleteeventbridge.png)
 
-   ![Click Create rule](/images/2.preparation/005-createbus.png)
+3. Tìm quy tắc có tên `uploaded_success`
 
-4. Nhập thông tin rule:
-   - **Name**: `uploaded_success`
-   - **Event bus**: `upload`
-   - **Rule type**: `Rule with an event pattern`
+4. Tích chọn vào checkbox bên cạnh tên quy tắc
 
-   ![Enter rule](/images/2.preparation/006-createbus.png)
+5. Nhấp vào **Delete (Xóa)**
 
-5. Nhấn **Next**
+![](/images/6.clean/002-deleteeventbridge.png)
 
-   ![Click Next](/images/2.preparation/007-createbus.png)
+6. Xác nhận xóa bằng cách nhấp **Delete**
 
----
-
-#### Thêm Mẫu Sự Kiện (Event Pattern)
-
-1. Trong phần **Events**:
-   - **Event source**: `Other`
-
-2. Ở mục **Event pattern**, chọn:  
-   - **Custom pattern (JSON editor)**
-
-3. Dán mẫu JSON sau:
-
-```json
-{
-  "source": ["dewebdeploy.upload"],
-  "detail-type": ["DeploymentUploaded"]
-}
-```
-
-![Thêm Mẫu Sự Kiện](/images/2.preparation/008-createbus.png)
-
-4. Nhấn **Next**
-
-![Nhấn Next](/images/2.preparation/009-createbus.png)
+![](/images/6.clean/003-deleteeventbridge.png)
 
 ---
 
-#### Cấu Hình Mục Tiêu (Target) Cho Rule
+#### Xóa Event Bus
 
-Trong phần **Target**:
+1. Truy cập [Amazon EventBridge Console – Event Buses](https://console.aws.amazon.com/events/home#/event-buses)
 
-- **Target type**: AWS service  
-- **Service**: Lambda function  
-- **Function**: `deploy-function`
+2. Tìm event bus tùy chỉnh có tên là `upload`
 
-![Chọn Lambda Function làm mục tiêu](/images/2.preparation/010-createbus.png)
+![](/images/6.clean/004-deleteeventbridge.png)
 
-6. Nhấn **Next**
+3. Tích chọn vào checkbox bên cạnh
 
-![Nhấn Next](/images/2.preparation/011-createbus.png)
+4. Nhấp **Delete**
 
-7. Xem lại cấu hình rule và nhấn **Next**
+![](/images/6.clean/005-deleteeventbridge.png)
 
-![Xem lại cấu hình](/images/2.preparation/012-createbus.png)
+5. Xác nhận việc xóa bằng cách nhấp **Delete**
 
-8. Nhấn **Create rule** để hoàn tất
+![](/images/6.clean/006-deleteeventbridge.png)
 
-![Tạo Rule](/images/2.preparation/013-createbus.png)
+> **Lưu ý:** Bạn phải xóa tất cả các quy tắc liên kết với event bus trước khi có thể xóa event bus đó.
 
 ---
 
-Bây giờ, khi `upload-function` phát sự kiện `DeploymentUploaded`, EventBridge sẽ tự động kích hoạt `deploy-function`.
+Sau khi quy tắc sự kiện và event bus tùy chỉnh đã bị xóa, tích hợp EventBridge sẽ được loại bỏ hoàn toàn.
 
 ---
 
-#### Bước Tiếp Theo
+#### Bước tiếp theo
 
-Tiếp tục đến [Tạo API Gateway và Cấu Hình CORS](../2.4-createapigateway/)
+Tiếp tục đến [6.4 – Xóa API Gateway](../6.4-deleteapigateway/)

@@ -1,119 +1,93 @@
 ---
-title: "Tạo Event Bus và Rule trên EventBridge"
+title: "Xóa IAM Roles và Chính sách (Policies)"
 date: "`r Sys.Date()`"
-weight: 3
+weight: 14
 chapter: false
-pre: " <b> 2.3 </b> "
+pre: " <b> 6.5 </b> "
 ---
 
-Trong bước này, bạn sẽ thiết lập **Event Bus** và **Rule** trong **Amazon EventBridge** để kết nối giữa `upload-function` và `deploy-function`.
+Trong bước dọn dẹp cuối cùng này, bạn sẽ xóa các **IAM role** và **chính sách tùy chỉnh (custom policies)** đã được tạo cho các hàm Lambda và tích hợp EventBridge.
 
-Sau khi hoàn tất, luồng sự kiện tự động sẽ như sau:
-
-> `upload-function` → (gửi sự kiện) → `EventBridge` → (rule khớp) → `deploy-function`
-
----
-
-#### Tạo Event Bus
-
-1. Truy cập [Amazon EventBridge Console](https://console.aws.amazon.com/events/home)
-
-2. Ở menu bên trái, chọn **Event buses**
-
-   ![Click Event Bus](/images/2.preparation/001-createbus.png)
-
-3. Nhấn **Create event bus**
-
-   ![Create Event Bus](/images/2.preparation/002-createbus.png)
-
-4. Nhập các thông tin sau:
-   - **Name**: `upload`
-   - Các cài đặt khác giữ mặc định
-
-   ![Enter the following name](/images/2.preparation/003-createbus.png)
-
-5. Nhấn **Create event bus**
-
-   ![Click Create event bus](/images/2.preparation/004-createbus.png)
+Việc này giúp giữ môi trường AWS của bạn gọn gàng và giảm thiểu rủi ro bảo mật không cần thiết.
 
 ---
 
-#### Tạo Event Rule: `uploaded_success`
+#### Xác định các Role cần xóa
 
-1. Truy cập [EventBridge Rules Console](https://console.aws.amazon.com/events/home#/rules)
+Bạn có thể đã tạo hoặc sử dụng các IAM role sau:
 
-2. Đảm bảo bạn đã chọn đúng **event bus** tên là `upload`
+- `upload-function-role` – gắn với `upload-function`  
+- `deploy-function-role` – gắn với `deploy-function`
 
-3. Nhấn **Create rule**
+Các role này có thể đã được gắn các chính sách quản lý như:
 
-   ![Click Create rule](/images/2.preparation/005-createbus.png)
+- `AmazonDynamoDBFullAccess`  
+- `AmazonEventBridgeFullAccess`  
+- `AmazonS3FullAccess`
 
-4. Nhập thông tin rule:
-   - **Name**: `uploaded_success`
-   - **Event bus**: `upload`
-   - **Rule type**: `Rule with an event pattern`
-
-   ![Enter rule](/images/2.preparation/006-createbus.png)
-
-5. Nhấn **Next**
-
-   ![Click Next](/images/2.preparation/007-createbus.png)
-
----
-
-#### Thêm Mẫu Sự Kiện (Event Pattern)
-
-1. Trong phần **Events**:
-   - **Event source**: `Other`
-
-2. Ở mục **Event pattern**, chọn:  
-   - **Custom pattern (JSON editor)**
-
-3. Dán mẫu JSON sau:
+Và một **chính sách inline tùy chỉnh**, ví dụ:
 
 ```json
 {
-  "source": ["dewebdeploy.upload"],
-  "detail-type": ["DeploymentUploaded"]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::awsdeplybucket1234/*"
+    }
+  ]
 }
 ```
+---
 
-![Thêm Mẫu Sự Kiện](/images/2.preparation/008-createbus.png)
+#### Xóa IAM Role
 
-4. Nhấn **Next**
+1. Truy cập [IAM Console – Roles](https://console.aws.amazon.com/iamv2/home#/roles)
 
-![Nhấn Next](/images/2.preparation/009-createbus.png)
+2. Trong thanh tìm kiếm, nhập `upload-function-role` và chọn nó
+
+![](/images/6.clean/001-deleteamplify.png)
+
+3. Xem lại các chính sách đang được gắn với role
+
+4. Tháo gỡ các chính sách quản lý (managed policies) nếu cần thiết
+
+![](/images/6.clean/002-deleteamplify.png)
+
+5. Nhấp vào **Delete** và xác nhận
+
+![](/images/6.clean/003-deleteamplify.png)
+
+6. Lặp lại các bước trên cho role `deploy-function-role`
+
+![](/images/6.clean/004-deleteamplify.png)  
+![](/images/6.clean/005-deleteamplify.png)  
+![](/images/6.clean/006-deleteamplify.png)
 
 ---
 
-#### Cấu Hình Mục Tiêu (Target) Cho Rule
+#### Xóa Chính Sách Inline Tùy Chỉnh (nếu có)
 
-Trong phần **Target**:
+Nếu bạn đã tạo chính sách inline tùy chỉnh theo cách thủ công:
 
-- **Target type**: AWS service  
-- **Service**: Lambda function  
-- **Function**: `deploy-function`
+1. Tại trang **Roles**, nhấp vào tên của role
 
-![Chọn Lambda Function làm mục tiêu](/images/2.preparation/010-createbus.png)
+![](/images/6.clean/007-deleteamplify.png)
 
-6. Nhấn **Next**
+2. Cuộn xuống phần **Permissions policies**
 
-![Nhấn Next](/images/2.preparation/011-createbus.png)
+3. Nếu bạn thấy bất kỳ chính sách tùy chỉnh nào, nhấp vào tên của nó
 
-7. Xem lại cấu hình rule và nhấn **Next**
+4. Chọn **Remove (Gỡ bỏ)**
 
-![Xem lại cấu hình](/images/2.preparation/012-createbus.png)
+![](/images/6.clean/008-deleteamplify.png)  
+![](/images/6.clean/009-deleteamplify.png)
 
-8. Nhấn **Create rule** để hoàn tất
-
-![Tạo Rule](/images/2.preparation/013-createbus.png)
+> **Lưu ý:** Các chính sách được quản lý sẵn (như `AmazonS3FullAccess`) không cần xóa trừ khi bạn đã tạo phiên bản tùy chỉnh của chúng.
 
 ---
 
-Bây giờ, khi `upload-function` phát sự kiện `DeploymentUploaded`, EventBridge sẽ tự động kích hoạt `deploy-function`.
+#### Hoàn tất Dọn Dẹp
 
----
-
-#### Bước Tiếp Theo
-
-Tiếp tục đến [Tạo API Gateway và Cấu Hình CORS](../2.4-createapigateway/)
+Bạn đã hoàn tất việc xóa tất cả tài nguyên được tạo ra cho quy trình triển khai của mình.

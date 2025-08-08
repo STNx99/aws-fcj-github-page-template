@@ -12,4 +12,5 @@ In this step, you will deploy a Next.js project to AWS Amplify to test the stati
 #### Content
 
 [5.1 Create github project](5.1-creategithubproject/)
+
 [5.2 Deploy to amplify](5.2-deploytoamplify/)
