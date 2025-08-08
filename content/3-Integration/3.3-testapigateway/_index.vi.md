@@ -6,70 +6,91 @@ chapter: false
 pre: " <b> 3.3 </b> "
 ---
 
-### 🎯 Mục tiêu
-
-Sau khi thiết lập API Gateway với các endpoint `/deploy` và `/status`, bước này sẽ giúp bạn kiểm tra xem các kết nối từ client (Postman, curl, hoặc frontend) đến Lambda đã hoạt động chính xác chưa.
+Trong bước này, bạn sẽ xác minh rằng API Gateway đã được tích hợp đúng với các hàm Lambda. Bạn sẽ kiểm tra cả hai endpoint (`/deploy` và `/status`) để đảm bảo các yêu cầu từ client được định tuyến và xử lý chính xác.
 
 ---
 
-### 1. Kiểm tra endpoint `/status`
+#### 1. Kiểm tra endpoint `/status`
 
-#### Mục đích:
-Xác nhận rằng Lambda `upload-function` đang hoạt động và có thể phản hồi yêu cầu HTTP.
+##### Mục đích:
+Đảm bảo Lambda `upload-function` phản hồi đúng với các yêu cầu HTTP gửi đến.
 
-#### Cách kiểm tra:
-
-- Mở **Postman** hoặc sử dụng **curl**
-- Gửi yêu cầu `GET` đến endpoint:
+##### Cách kiểm tra:
+- Tìm **API Gateway endpoint** trong AWS Management Console:
+  - Vào **API Gateway** > **HTTP APIs**
+  - Chọn API của bạn và tìm **default endpoint** URL (ví dụ: `https://<api-id>.execute-api.<region>.amazonaws.com`)
+  ![API endpoints](/images/3.integration/010-connecteventbridge.png)
+- Sử dụng **Postman**, **curl**, hoặc frontend của bạn
+- Gửi yêu cầu `GET` đến API Gateway:
 
 ```bash
-curl -X GET https://<api-id>.execute-api.<region>.amazonaws.com/prod/status
+curl -X GET https://<api-id>.execute-api.<region>.amazonaws.com/status
 ```
- Kỳ vọng: Trả về mã 200 OK cùng với phản hồi dạng JSON (ví dụ: { "status": "ready" } hoặc tương tự)
+Kết quả mong đợi (Lambda mặc định):
+Bạn sẽ nhận được phản hồi 200 OK với JSON tương tự:
+```json
+{
+  "message": "Hello from Lambda"
+}
+```
+---
+#### 2. Kiểm tra endpoint `/deploy`
+##### Mục đích:
+Kích hoạt upload-function qua POST /deploy và xác nhận Lambda thực hiện các bước sau:
+- Clone repository GitHub
+- Nén file (zip)
+- Upload lên S3 bucket
+- Gửi sự kiện đến EventBridge
 
-2. Kiểm tra endpoint /deploy
-Mục đích:
-Kích hoạt Lambda upload-function thông qua endpoint POST /deploy để kiểm tra luồng upload + gửi sự kiện EventBridge.
-
-Cách kiểm tra:
-Sử dụng Postman hoặc curl để gửi POST request:
-curl -X POST https://<api-id>.execute-api.<region>.amazonaws.com/prod/deploy \
+##### Cách kiểm tra:
+```bash
+curl -X POST https://<api-id>.execute-api.<region>.amazonaws.com/deploy \
 -H "Content-Type: application/json" \
 -d '{}'
+```
+Kết quả mong đợi (Lambda mặc định):
+Bạn sẽ nhận được phản hồi 200 OK với nội dung như:
+```json
+{
+  "message": "Hello from Lambda"
+}
+```
+Xác minh trên CloudWatch:
+Trong AWS CloudWatch console:
+- Vào Logs
+- Mở log group của upload-function
+- Kiểm tra log có các dòng:
+    - Đã clone repository GitHub
+    - Đã nén file và upload lên S3
+    - Đã gửi sự kiện EventBridge
+Bạn cũng có thể kiểm tra log group của deploy-function để xác nhận nó đã được kích hoạt sau khi nhận sự kiện.
 
-Kỳ vọng:
+---
 
-Nhận phản hồi 200 OK
+#### 3. Kiểm tra từ frontend (Tùy chọn)
+Nếu bạn phát triển frontend (ví dụ: http://localhost:3000), có thể kiểm tra tích hợp bằng JavaScript:
 
-Trong CloudWatch logs, bạn sẽ thấy log clone repo, zip và upload vào S3
+```js
+fetch("https://<api-id>.execute-api.<region>.amazonaws.com/prod/deploy", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({})
+})
+.then(res => res.json())
+.then(console.log)
+.catch(console.error);
+```
+Đảm bảo API Gateway đã cấu hình CORS cho phép truy cập từ http://localhost:3000.
 
-Nếu thành công, EventBridge sẽ tự động gọi deploy-function
+---
 
-3. Kiểm tra trong CloudWatch
-Để xác minh hoạt động thực tế:
+#### Kết quả cuối cùng
+Sau khi hoàn thành bước này, bạn cần xác nhận:
+- Endpoint /status và /deploy truy cập được qua API Gateway
+- upload-function xử lý yêu cầu đúng
+- EventBridge kích hoạt deploy-function thành công
+- Log CloudWatch xác nhận chuỗi hành động trên
 
-Vào CloudWatch Logs
-
-Xem log của Lambda upload-function
-
-Kiểm tra xem có log thông báo như:
-
-“Cloning repository…”
-
-“Uploading to S3…”
-
-“Publishing Event…”
-
-🧪 Tùy chọn: Kiểm tra từ frontend
-Nếu bạn có frontend chạy local (VD: localhost:3000), thử gọi 2 API trên bằng JS/axios hoặc fetch để xác nhận CORS đã hoạt động đúng.
-
-✅ Kết quả mong đợi
-Cả hai endpoint /deploy và /status hoạt động đúng
-
-Lambda nhận và xử lý yêu cầu thành công
-
-EventBridge nhận sự kiện từ upload và kích hoạt deploy Lambda
-
-Bạn đã hoàn tất bước tích hợp – hệ thống serverless CI/CD đã sẵn sàng chạy thử nghiệm thực tế 🎉
-
-Tiếp theo: Chạy thử quy trình deploy
+Bạn đã sẵn sàng chuyển sang Chương 4: Chạy thử pipeline triển khai.

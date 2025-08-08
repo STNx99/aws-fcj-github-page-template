@@ -16,18 +16,21 @@ In this step, you will verify that the API Gateway is correctly integrated with 
 Ensure the `upload-function` is responding correctly to incoming HTTP requests.
 
 ##### How to test:
-
+- Find your **API Gateway endpoint** in the AWS Management Console:
+  - Navigate to **API Gateway** > **HTTP APIs**
+  - Select your API and find the **default endpoint** URL (e.g., `https://<api-id>.execute-api.<region>.amazonaws.com`)
+  ![API endpoints](/images/3.integration/010-connecteventbridge.png)
 - Use **Postman**, **curl**, or your frontend
 - Send a `GET` request to your API Gateway:
 
 ```bash
-curl -X GET https://<api-id>.execute-api.<region>.amazonaws.com/prod/status
+curl -X GET https://<api-id>.execute-api.<region>.amazonaws.com/status
 ```
-Expected result:
+Expected result (default Lambda):
 You should receive a 200 OK response with a JSON body similar to:
 ```json
 {
-  "status": "ready"
+  "message": "Hello from Lambda"
 }
 ```
 ---
@@ -41,15 +44,15 @@ Trigger the upload-function through a POST /deploy request and verify it perform
 
 How to test:
 ```bash
-curl -X POST https://<api-id>.execute-api.<region>.amazonaws.com/prod/deploy \
+curl -X POST https://<api-id>.execute-api.<region>.amazonaws.com/deploy \
 -H "Content-Type: application/json" \
 -d '{}'
 ```
-Expected result:
+Expected result (default Lambda):
 You should receive a 200 OK response with a message like:
 ```json
 {
-  "message": "Upload and event published successfully."
+  "message": "Hello from Lambda"
 }
 ```
 CloudWatch verification:

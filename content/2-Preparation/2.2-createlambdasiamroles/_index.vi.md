@@ -1,39 +1,27 @@
 ---
-title : "Tạo IAM Role"
-date :  "`r Sys.Date()`" 
-weight : 2 
-chapter : false
-pre : " <b> 2.2 </b> "
+title: "Tạo Hàm Lambda và IAM Roles"
+date: "`r Sys.Date()`"
+weight: 2
+chapter: false
+pre: " <b> 2.2 </b> "
 ---
 
-### Tạo IAM Role
+Trong bước này, bạn sẽ tạo hai **hàm Lambda** tạo nền tảng cho quy trình triển khai tự động của bạn:
 
-Trong bước này chúng ta sẽ tiến hành tạo IAM Role. Trong IAM Role này sẽ được gán policy **AmazonSSMManagedInstanceCore**, đây là policy cho phép máy chủ EC2 có thể giao tiếp với Session Manager.
+- `upload-function`: Clones mã nguồn từ GitHub, tải lên S3 và gửi một sự kiện EventBridge.
+- `deploy-function`: Xử lý quá trình triển khai thực tế (ví dụ: cập nhật môi trường, thay đổi trạng thái, ghi dữ liệu vào DynamoDB).
 
-1. Truy cập vào [giao diện quản trị dịch vụ IAM](https://console.aws.amazon.com/iamv2/)
-2. Ở thanh điều hướng bên trái, click  **Roles**.  
+Bạn cũng sẽ tạo và cấu hình **IAM roles** để các hàm Lambda này có thể tương tác an toàn với các dịch vụ AWS.
 
-![role](/images/2.prerequisite/038-iamrole.png)
+---
 
-3. Click **Create role**.  
+### Tổng Quan Kiến Trúc
 
-![role1](/images/2.prerequisite/039-iamrole.png)
+![Lambda Architecture](/images/arc-lambda-flow.png)
 
-4. Click **AWS service** và click **EC2**. 
-  + Click **Next: Permissions**.  
+---
 
-![role1](/images/2.prerequisite/040-iamrole.png)
+### Nội dung
 
-5. Trong ô Search, điền **AmazonSSMManagedInstanceCore** và ấn phím Enter để tìm kiếm policy này.
-  + Click chọn policy **AmazonSSMManagedInstanceCore**.
-  + Click **Next: Tags.**
-
-![createpolicy](/images/2.prerequisite/041-iamrole.png)
-
-6. Click **Next: Review**.
-7. Đặt tên cho Role là **SSM-Role** ở Role Name  
-  + Click **Create Role** \.
-
-![namerole](/images/2.prerequisite/042-iamrole.png)
-
-Tiếp theo chúng ta sẽ thực hiện kết nối đến các máy chủ EC2 chúng ta đã tạo bằng **Session Manager**.
+- [2.2.1 Tạo Hàm Lambda Upload](2.2.1-createlambdaupload/)
+- [2.2.2 Tạo Hàm Lambda Triển Khai (Deploy)](2.2.2-createlambdadeploy/)
