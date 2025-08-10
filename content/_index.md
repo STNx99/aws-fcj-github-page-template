@@ -1,21 +1,22 @@
 ---
-title : "Session Management"
+title : "Dewebdeploy: Deploy and host static website"
 date :  "`r Sys.Date()`" 
 weight : 1 
 chapter : false
 ---
 # Work with Amazon System Manager - Session Manager
 
-### Overall
- In this lab, you'll learn the basics and practice of Amazon  System Manager - Session Manager
-. Perform creating public and private instance connections. 
+#### Overall
+In this lab, you will build an advanced, fully serverless, event-driven deployment pipeline using AWS Elastic Beanstalk alongside supporting services such as S3, Lambda, API Gateway, EventBridge, Amplify, and DynamoDB. The workflow automates the retrieval of source code from GitHub, packaging and uploading via Lambda, and triggering deployments through EventBridge, while tracking deployment status in DynamoDB and exposing it through API Gateway endpoints.  
+You will also configure S3 for static website hosting, integrate a frontend for deployment interaction, and apply secure IAM roles to follow best practices. Additionally, you will use AWS Systems Manager – Session Manager for secure, auditable EC2 access without requiring Bastion hosts or SSH.  
+By completing this lab, you will gain hands-on experience in creating a production-ready deployment system that mirrors advanced Elastic Beanstalk strategies in a modern, serverless design.
 
-![ConnectPrivate](/images/arc-log.png) 
+![Architecture](/images/1.intro/architecture.png)
 
 ### Content
- 1. [Introduction ](1-introduce/)
- 2. [Preparation](2-prerequiste/)
- 3. [Connect to EC2 instance](3-accessibilitytoinstances/)
- 4. [Manage session logs](4-s3log/)
- 5. [Port Forwarding](5-Portfwd/)
- 6. [Clean up resources](6-cleanup/)
+1. [Introduction](1-Introduce/)
+2. [Preparation](2-Preparation/)
+3. [Integration](3-Integration/)
+4. [Manage S3 logs](4-s3log/)
+5. [Deploy to AWS Amplify](5-deploytoamplify/)
+6. [Clean up resources](6-cleanup/)
