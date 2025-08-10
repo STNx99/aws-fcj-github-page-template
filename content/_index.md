@@ -4,7 +4,7 @@ date :  "`r Sys.Date()`"
 weight : 1 
 chapter : false
 ---
-# Work with Amazon System Manager - Session Manager
+# Dewebdeploy: Deploy and host static website
 
 #### Overall
 In this lab, you will build an advanced, fully serverless, event-driven deployment pipeline using AWS Elastic Beanstalk alongside supporting services such as S3, Lambda, API Gateway, EventBridge, Amplify, and DynamoDB. The workflow automates the retrieval of source code from GitHub, packaging and uploading via Lambda, and triggering deployments through EventBridge, while tracking deployment status in DynamoDB and exposing it through API Gateway endpoints.  
