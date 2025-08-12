@@ -39,4 +39,4 @@ By regularly checking these logs and events, you can quickly identify and troubl
 
 Continue to the next step to learn about production deployment and frontend integration.
 
-[Next: Production Deployment & Frontend Integration](../5-deploytoamplify/)
+[Next: Production Deployment & Frontend Integration](../../5-deploytoamplify/)

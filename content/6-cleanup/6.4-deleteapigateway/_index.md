@@ -65,4 +65,4 @@ No additional steps are needed.
 
 #### Next Step
 
-Continue to [6.5 – Delete IAM Roles and Policies](../6.5-deleteiam/)
+Continue to [6.5 – Delete IAM Roles and Policies](../6.5-deleteamplify/)

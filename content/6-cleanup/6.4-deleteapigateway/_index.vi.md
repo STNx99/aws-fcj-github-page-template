@@ -65,4 +65,4 @@ Không cần thêm bước nào khác.
 
 #### Bước tiếp theo
 
-Tiếp tục đến [6.5 – Xóa IAM Roles và Policies](../6.5-deleteiam/)
+Tiếp tục đến [6.5 – Xóa IAM Roles và Policies](../6.5-deleteamplify/)

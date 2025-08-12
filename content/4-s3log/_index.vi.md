@@ -16,6 +16,6 @@ Bằng cách hoàn thành các bước này, bạn sẽ xác thực luồng ho�
 
 #### Nội dung liên quan
 
-- [4.1 Tải mã nguồn qua Lambda Upload](/4.1-uploadlambda/)
-- [4.2 Kiểm tra trạng thái triển khai qua API](/4.2-checkstatus/)  
-- [4.3 Giám sát logs và sự kiện](/4.3-monitorlogs/)
+- [4.1 Tải mã nguồn qua Lambda Upload](4.1-uploadlambda/)
+- [4.2 Kiểm tra trạng thái triển khai qua API](4.2-checkstatus/)  
+- [4.3 Giám sát logs và sự kiện](4.3-monitorlogs/)

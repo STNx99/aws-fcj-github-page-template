@@ -39,4 +39,4 @@ Bằng cách thường xuyên kiểm tra các log và sự kiện này, bạn c�
 
 Tiếp tục bước tiếp theo để tìm hiểu cách triển khai sản phẩm và tích hợp với giao diện người dùng (frontend).
 
-[Tiếp theo: Triển khai sản phẩm và tích hợp giao diện](../5-deploytoamplify/)
+[Tiếp theo: Triển khai sản phẩm và tích hợp giao diện](../../5-deploytoamplify/)

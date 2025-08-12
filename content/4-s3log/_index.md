@@ -16,6 +16,6 @@ By completing these steps, you’ll validate the end-to-end flow of your deploym
 
 #### Context
 
-- [4.1 Upload source code via Lambda Upload](/4.1-uploadlambda/)
-- [4.2 Check deployment status via API](/4.2-checkstatus/)  
-- [4.3 Monitor logs and events](/4.3-monitorlogs/)
+- [4.1 Upload source code via Lambda Upload](4.1-uploadlambda/)
+- [4.2 Check deployment status via API](4.2-checkstatus/)  
+- [4.3 Monitor logs and events](4.3-monitorlogs/)
